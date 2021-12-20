@@ -1,0 +1,90 @@
+version: '3.3'
+services:
+  mysql:
+    image: m.docker-registry.ir/mysql/mysql-server:8.0
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./docker-data/mysql:/var/lib/mysql
+  redis:
+    image: m.docker-registry.ir/redis
+    container_name: redis
+    ports:
+      - 6379:6379
+  mongo:
+    image: m.docker-registry.ir/mongo:4.4.6
+    container_name: mongo
+    # entrypoint: mongod --bind_ip_all --replSet rs0
+    # command: --wiredTigerCacheSizeGB 1
+    # volumes:
+    #   - ./mongodb_replicaset:/data/db
+    # networks:
+    #   - mongodb_replicaset_network
+    volumes:
+      - ./docker-data/mongo:/data/db
+    environment:
+      - TZ=Asia/Tehrans
+    ports:
+      - 27017:27017
+  redis-commander:
+    image: m.docker-registry.ir/rediscommander/redis-commander
+    container_name: redis-commander
+    hostname: redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - '8081:8081'
+  phpmyadmin:
+    image: m.docker-registry.ir/phpmyadmin
+    container_name: pma
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 1234:80
+  # opensearch-node1:
+  #   image: m.docker-registry.ir/opensearchproject/opensearch:1.1.0
+  #   container_name: opensearch-node1
+  #   environment:
+  #     #- cluster.name=opensearch-cluster
+  #     - node.name=opensearch-node1
+  #     - discovery.type=single-node
+  #     #- discovery.seed_hosts=opensearch-node1,opensearch-node2
+  #     #- cluster.initial_master_nodes=opensearch-node1,opensearch-node2
+  #     #- bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+  #     #- "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+  #   volumes:
+  #     - opensearch-data1:/usr/share/opensearch/data
+  #   ports:
+  #     - 9200:9200
+  #     - 9600:9600 # required for Performance Analyzer
+  #   networks:
+  #     - opensearch-net
+#   opensearch-dashboards:
+#     image: opensearchproject/opensearch-dashboards:1.1.0
+#     container_name: opensearch-dashboards
+#     ports:
+#       - 5601:5601
+#     expose:
+#       - '5601'
+#     environment:
+#       OPENSEARCH_HOSTS: '["https://opensearch-node1:9200","https://opensearch-node2:9200"]' # must be a string with no spaces when specified as an environment variable
+#     networks:
+#       - opensearch-net
+
+# volumes:
+#   opensearch-data1:
+
+# networks:
+  # opensearch-net:
+# networks:
+#   mongodb_replicaset_network:

@@ -1,0 +1,59 @@
+default:
+    image: m.docker-registry.ir/docker
+
+stages:
+    - buildbase
+    - build
+    - deploy
+
+workflow:
+    rules:
+        - if: '$CI_COMMIT_BRANCH=="master"'
+          when: always
+        - when: never
+
+variables:
+    REGISTRY: "https://registry.avapardaz.org"
+    DOCKERFILE_BASE_TAG: "registry.avapardaz.org/modirlo/backendbase:latest"
+    DOCKERFILE_TAG: "registry.avapardaz.org/modirlo/backend:latest"
+    #OSRM: "registry.avapardaz.org/zoodex/osrm:latest"
+
+buidbase:
+    stage: buildbase
+    before_script:
+        - echo "$DOCKER_REGISTRY_PASS" | docker login $REGISTRY --username root --password-stdin
+    script:
+        - docker build -f Dockerfile.base . -t $DOCKERFILE_BASE_TAG
+    after_script:
+        - docker push $DOCKERFILE_BASE_TAG
+    rules:
+        - if: '$CI_COMMIT_MESSAGE=~ /cmd npm-install/ || $CI_PIPELINE_SOURCE=="web"'
+          when: always
+        - when: never
+
+build:
+    stage: build
+    before_script:
+        - echo "$DOCKER_REGISTRY_PASS" | docker login $REGISTRY --username root --password-stdin
+    script:
+        - docker build -f Dockerfile . -t $DOCKERFILE_TAG
+    after_script:
+        - docker push $DOCKERFILE_TAG
+    rules:
+        - if: '$CI_COMMIT_MESSAGE=~ /cmd npm-install/ || $CI_COMMIT_MESSAGE=~ /cmd build/ || $CI_PIPELINE_SOURCE=="web"'
+          when: always
+        - when: never
+
+deploy_swarm:
+    stage: deploy
+    before_script:
+      - echo "$DOCKER_REGISTRY_PASS" | docker login $REGISTRY --username root --password-stdin
+    script:
+      - docker service update --force --with-registry-auth modirlo_backend --image $DOCKERFILE_TAG
+    rules:
+      - if: '$CI_COMMIT_MESSAGE=~ /cmd npm-install/ || $CI_COMMIT_MESSAGE=~ /cmd build/ || $CI_PIPELINE_SOURCE=="web"'
+        when: always
+      - when: never
+
+
+

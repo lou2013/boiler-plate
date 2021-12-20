@@ -1,0 +1,6 @@
+FROM m.docker-registry.ir/node:16
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install

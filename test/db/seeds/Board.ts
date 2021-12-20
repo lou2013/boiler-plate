@@ -1,0 +1,61 @@
+import * as mongoose from 'mongoose';
+
+export default [
+  {
+    _id: new mongoose.Types.ObjectId('222222233333'),
+    ownerId: new mongoose.Types.ObjectId('222222222233').toString(),
+    customFields: [],
+    labels: [],
+    lists: [],
+    boardMembershipsId: [new mongoose.Types.ObjectId('222222433333')],
+    messages: [],
+    visibility: 'public',
+    color: '000000',
+    name: 'string',
+    inviteCode: 'a2c13189-1d5b-43e0-8da5-002c3eaf2823',
+    updatedBy: new mongoose.Types.ObjectId('222222222233').toString(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: new mongoose.Types.ObjectId('787878787878'),
+    ownerId: new mongoose.Types.ObjectId('222222222233').toString(),
+    customFields: [],
+    labels: [],
+    lists: [
+      {
+        updatedAt: new Date(),
+        createdAt: new Date(),
+        cardsId: [
+          new mongoose.Types.ObjectId('666666666661'),
+          new mongoose.Types.ObjectId('666666666662'),
+          new mongoose.Types.ObjectId('666666666663'),
+        ],
+        position: '0|100000:',
+        title: 'tttt',
+        _id: new mongoose.Types.ObjectId('444444455555'),
+      },
+      {
+        updatedAt: new Date(),
+        createdAt: new Date(),
+        cardsId: [
+          new mongoose.Types.ObjectId('666666666664'),
+          new mongoose.Types.ObjectId('666666666665'),
+          new mongoose.Types.ObjectId('666666666666'),
+        ],
+        position: '0|100008:',
+        title: 'tttt2',
+        _id: new mongoose.Types.ObjectId('444444455556'),
+      },
+    ],
+    boardMembershipsId: [new mongoose.Types.ObjectId('787878787879')],
+    messages: [],
+    visibility: 'public',
+    color: '000000',
+    name: 'string',
+    inviteCode: 'a2c13189-1d5b-43e0-8da5-002c3eaf2823',
+    updatedBy: new mongoose.Types.ObjectId('222222222233').toString(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];

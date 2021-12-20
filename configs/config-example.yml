@@ -1,0 +1,101 @@
+app:
+  name: backend
+  description: description
+  environment: DEVELOPMENT
+  version: 1.0
+  secret: 'jwtsecret-kasdnisucrweis'
+  token_expiresIn: 1d
+  refresh_secret: 'fWSf!deVz@j+dH2Cvu6DNhAxs!gdq7+2'
+  refresh_expiresIn: 14d
+  refresh_expiresIn_sc: 1209600
+  redis_sms_code_expire: 120
+  forwarded_for: false
+  api_token:
+  system_organ_id: 1
+  blurhash_url: http://modirlo_express:3000
+
+swagger:
+  username: root
+  password: root
+
+server:
+  host: localhost
+  port: 3000
+  server_ips:
+    - localhost
+    - 192.168.1.1
+
+mysql:
+  main:
+    dialect: 'mysql'
+    host: 'localhost'
+    port: 3306
+    database: 'test'
+    username: 'root'
+    password: 'root'
+    timezone: '+03:30'
+    ssl: false
+
+redis:
+  main:
+    host: 'localhost'
+    port: 6379
+    name: main
+    db: 0
+  queue:
+    host: 'localhost'
+    port: 6379
+    name: main
+    db: 0
+  cache:
+    host: 'localhost'
+    port: 6379
+    name: cache
+    db: 0
+  pubsub:
+    host: 'localhost'
+    port: 6379
+    name: pubsub
+    db: 0
+    # username:
+    # password:
+    # keyPrefix:
+
+mongo:
+  test:
+    url: mongodb://localhost
+    dbName: 'test'
+    port: '27017'
+  main:
+    url: mongodb://localhost
+    dbName: 'modirlo'
+    port: '27017'
+
+sentry:
+  url: https://46a885f6b8464254ad4a64f586ca0ca5@sentry.mobit.ir/12
+
+s3:
+  main:
+    accessKey:
+    privateKey:
+    endpoint:
+    bucketName:
+
+sms:
+  baseUrl: https://services.avapardaz.org/v1/sms
+  organToken:
+
+loginUrl:
+  google: https://people.googleapis.com/v1/people/me/connections?requestMask.includeField=person.names
+
+fcm:
+  projectId:
+  privateKey:
+  clientEmail:
+
+openSearch:
+  host: localhost
+  port: 9200
+  auth: admin:admin
+  protocol: https
+  index: search_items

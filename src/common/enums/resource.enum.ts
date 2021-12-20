@@ -1,0 +1,16 @@
+export enum Resource {
+  ALL = 'all',
+  USER = 'user',
+  ROLE = 'role',
+  PERMISSION = 'permission',
+  WORKSPACE = 'workspace',
+  MEMBERSHIP = 'membership',
+  LIST = 'list',
+  BOARD = 'board',
+  BOARD_MEMBERSHIP = 'boardMembership',
+  CARD = 'card',
+  FILE = 'file',
+  TEMPLATE = 'Template',
+  ERROR = 'Error',
+  REMOTE_CONFIG = 'RemoteConfig',
+}
