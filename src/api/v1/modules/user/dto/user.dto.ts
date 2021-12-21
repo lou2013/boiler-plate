@@ -14,6 +14,7 @@ import { MongoBaseDto } from '../../../../../common/dto/mongo-base.dto';
 import { IsString } from 'class-validator';
 import { NestedRoleDto } from '../../authorizaation/dto/nested-role.dto';
 import { Types } from 'mongoose';
+import { ContractDto } from './contract/contract.dto';
 
 export class UserDto extends MongoBaseDto {
   @Expose()
@@ -108,6 +109,12 @@ export class UserDto extends MongoBaseDto {
     { toClassOnly: true },
   )
   rolesId!: string[];
+
+  @Expose()
+  @ApiProperty({
+    type: ContractDto,
+  })
+  contract: ContractDto;
 
   constructor(partial: Partial<UserDto>) {
     super(partial);

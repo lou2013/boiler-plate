@@ -4,6 +4,7 @@ import { Gender } from '../enum/gender.enum';
 import { Collection } from '../../../../../common/enums/collection.enum';
 import { MongoBaseModel } from '../../../../../common/models/mongo-base-model.entity';
 import { defaultIds } from '../../../../../constants/default-ids';
+import { Contract, ContractSchema } from './contract.entity';
 
 @Schema({ collection: Collection.USER })
 export class User extends MongoBaseModel {
@@ -31,6 +32,9 @@ export class User extends MongoBaseModel {
     default: [new Types.ObjectId(defaultIds.defaultRole)],
   })
   rolesId!: string[];
+
+  @Prop({ type: ContractSchema })
+  contract?: Contract;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
