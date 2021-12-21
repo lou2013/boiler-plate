@@ -1,5 +1,5 @@
-export interface FcmConfig {
-  projectId: string;
-  privateKey: string;
-  clientEmail: string;
-}
+// export interface FcmConfig {
+//   projectId: string;
+//   privateKey: string;
+//   clientEmail: string;
+// }

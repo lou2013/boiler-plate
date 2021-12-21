@@ -28,11 +28,10 @@ export class GoogleLoginService implements ILoginService {
     if (status === 500) {
       throw new ServiceUnavailableException('service is unavailable');
     }
-    const { first_name, last_name, username } = data;
+    const { fullName, username } = data;
     return {
       user: new CreateUserDto({
-        firstName: first_name,
-        lastName: last_name,
+        fullName,
         phoneNumber: username,
         gender: Gender.OTHER,
       }),

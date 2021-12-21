@@ -49,7 +49,7 @@ export class AuthenticationController {
     type: LoginResponseDto,
   })
   async loginByPassword(@Request() req): Promise<LoginResponseDto> {
-    return await this.authenticationService.login(req.user, req.body.fcmToken);
+    return await this.authenticationService.login(req.user);
   }
 
   @Post('/login')
@@ -113,23 +113,11 @@ export class AuthenticationController {
   })
   @ApiOkResponse({ type: LoginResponseDto })
   @ApiHeader({ name: 'refresh-token' })
-  @ApiHeader({ name: 'fcm-token' })
   @UseGuards(RefreshTokenGuard)
   async refreshToken(
     @Headers('refresh-token') refresh_token,
-    @Headers('fcm-token') fcmToken,
     @CurrentUser() user: UserDto,
   ): Promise<LoginResponseDto> {
-    return this.authenticationService.refresh(refresh_token, user, fcmToken);
-  }
-
-  @Post('/sign-up')
-  @ApiOperation({
-    summary: 'signup',
-    description: 'signup',
-  })
-  @ApiOkResponse({ type: LoginResponseDto })
-  async signUp(@Body() signupDto: SignupDto): Promise<LoginResponseDto> {
-    return await this.authenticationService.signUp(signupDto);
+    return this.authenticationService.refresh(refresh_token, user);
   }
 }

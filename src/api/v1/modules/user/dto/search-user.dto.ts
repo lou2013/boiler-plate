@@ -1,9 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Gender } from '../enum/gender.enum';
 import { UserDto } from './user.dto';
-import { UserConfigDto } from './user-config.dto';
 import { NestedRoleDto } from '../../authorizaation/dto/nested-role.dto';
-import { UserStatus } from '../enum/user-status.enum';
 
 export class SearchedUserDto extends UserDto {
   @Expose({})
@@ -13,19 +11,10 @@ export class SearchedUserDto extends UserDto {
   username!: string;
 
   @Expose()
-  firstName!: string;
-
-  @Expose()
-  lastName!: string;
-
-  @Exclude()
-  status: UserStatus;
+  fullName!: string;
 
   @Exclude()
   gender!: Gender;
-
-  @Expose()
-  avatarId!: string;
 
   @Exclude()
   roles: NestedRoleDto[];
@@ -43,21 +32,6 @@ export class SearchedUserDto extends UserDto {
   password: string;
 
   @Exclude()
-  membership!: string[];
-
-  @Exclude()
-  bio!: string;
-
-  @Exclude()
-  cards!: string[];
-
-  @Exclude()
-  notifications!: string[];
-
-  @Exclude()
-  fcmTokens: string[];
-
-  @Exclude()
   updatedBy: string;
 
   @Exclude()
@@ -65,7 +39,4 @@ export class SearchedUserDto extends UserDto {
 
   @Exclude()
   updatedAt: Date;
-
-  @Exclude()
-  config: UserConfigDto;
 }

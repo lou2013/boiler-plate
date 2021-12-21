@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { WinstonLogger } from './common/logger/logger';
-
 import { GlobalValidationPipe } from './common/pipes/global-validation.pipe';
 import { ErrorFilter } from './common/filters/error.filter';
 import { Logger } from '@nestjs/common';
@@ -13,12 +12,9 @@ import * as helmet from 'helmet';
 import { AppConfigs } from './constants/app.configs';
 import { SentryConfig } from './common/config/sentry.config';
 import { SentryService } from '@ntegral/nestjs-sentry';
-import { FcmConfig } from './common/config/fcm.config';
-import * as admin from 'firebase-admin';
-import { ServiceAccount } from 'firebase-admin';
 import { ErrorService } from './api/v1/modules/error/service/error.service';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const configService = app.get<ConfigService>(ConfigService);
   app.useLogger(
@@ -26,21 +22,9 @@ async function bootstrap() {
   );
   const serverConfig = configService.get<ServerConfig>(AppConfigs.SERVER);
 
-  const fcmConfig = configService.get<FcmConfig>(AppConfigs.FCM);
-
   const errorService = app.get(ErrorService);
 
-  fcmConfig.privateKey = fcmConfig.privateKey.replace(/\\n/g, '\n');
-
-  const adminConfig: ServiceAccount = {
-    ...fcmConfig,
-  };
-
-  admin.initializeApp({
-    credential: admin.credential.cert(adminConfig),
-  });
   app.useGlobalInterceptors(SerializerInterceptor(app));
-  // app.useGlobalFilters(new FlubErrorHandler());
 
   app.useGlobalFilters(
     new ErrorFilter(

@@ -15,7 +15,9 @@ export class GoogleApiService {
     AppConfigs.GOOGLE_LOGIN_URL,
   );
 
-  async validateToken(token: string) {
+  async validateToken(
+    token: string,
+  ): Promise<{ status: number; data: { fullName: string; username: string } }> {
     // : Promise<AxiosResponse<GoogleUserDto>> {
     console.log(token);
 
@@ -26,8 +28,7 @@ export class GoogleApiService {
     // return lastValueFrom(this.httpService.get(`${this.baseUrl}`, config));
     return {
       data: {
-        first_name: '',
-        last_name: '',
+        fullName: '',
         username: '',
       },
       status: 200,

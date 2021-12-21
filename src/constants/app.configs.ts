@@ -27,7 +27,7 @@ export class AppConfigs {
 
   public static GOOGLE_LOGIN_URL = 'loginUrl.google';
 
-  public static FCM = 'fcm';
+  // public static FCM = 'fcm';
 
   public static OPEN_SEARCH = 'openSearch';
 }

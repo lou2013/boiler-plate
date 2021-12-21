@@ -4,9 +4,7 @@ import {
   Injectable,
   Logger,
   LoggerService,
-  NotFoundException,
   NotImplementedException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { compare, genSalt, hash } from 'bcrypt';
 import { UserService } from '../../user/service/user.service';
@@ -23,17 +21,13 @@ import { RedisManager } from '@liaoliaots/nestjs-redis';
 import { RedisKeys } from '../enum/reids-keys.enum';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
-import { SignupDto } from '../dto/signup.dto';
 import { Redis } from 'ioredis';
 import { plainToClass } from 'class-transformer';
-import { UserStatus } from '../../user/enum/user-status.enum';
 import { ChangePasswordDto } from '../dto/change-password.dto';
 import { LoginResponseDto } from '../dto/login-response.dto';
 import { TokenResponseDto } from '../dto/token-response.dto';
 import { RedisClients } from '../../../../../common/enums/redis.clients.enum';
 import { JwtPayloadDto } from '../dto/jwt-payload.dto';
-import { FilterOperationEnum } from '../../../../../common/enums/filter-operation.enum';
-import { CreateUserDto } from '../../user/dto/create-user.dto';
 import { changePhoneNumberStep } from '../enum/change-phone-number-step.enum';
 import { LoginByToken } from '../methods/login-by-token';
 import { GoogleApiService } from '../../api-services/service/google-api.service';
@@ -42,6 +36,7 @@ import { FilterOptionDto } from '../../../../../common/dto/filter-option.dto';
 import { AppConfig } from '../../../../../common/config/app.config';
 import { AppConfigs } from '../../../../../constants/app.configs';
 import { VerifyLookupDto } from '../../../../../shared/sms/dto/verify-lookup.dto';
+import { FilterOperationEnum } from 'src/common/enums/filter-operation.enum';
 
 @Injectable()
 export class AuthenticationService {
@@ -93,7 +88,7 @@ export class AuthenticationService {
     return null;
   }
 
-  async login(user: UserDto, fcmToken: string): Promise<LoginResponseDto> {
+  async login(user: UserDto): Promise<LoginResponseDto> {
     if (!user) return;
     const payload: JwtPayloadDto = {
       phoneNumber: user.phoneNumber,
@@ -106,20 +101,6 @@ export class AuthenticationService {
     const refreshExpiresInSc = this.configService.get<AppConfig>(
       AppConfigs.APP,
     ).refresh_expiresIn_sc;
-
-    if (fcmToken)
-      user = await this.userService.update(
-        [
-          new FilterOptionDto({
-            field: '_id',
-            operation: FilterOperationEnum.EQ,
-            value: user.id,
-          }),
-        ],
-        { $push: { fcmTokens: fcmToken } },
-        user,
-        { new: true },
-      );
 
     const result = {
       accessToken: this.jwtService.sign(payload),
@@ -153,13 +134,12 @@ export class AuthenticationService {
 
     if ((response as TokenResponseDto).validateToken)
       return { validateToken: (response as TokenResponseDto).validateToken };
-    return this.login(response.user as UserDto, loginMethodDto.fcmToken);
+    return this.login(response.user as UserDto);
   }
 
   async refresh(
     refresh_token: string,
     user: UserDto,
-    fcmToken: string,
   ): Promise<LoginResponseDto> {
     if (
       refresh_token ===
@@ -167,7 +147,7 @@ export class AuthenticationService {
         `authentication:${user.phoneNumber}:${RedisKeys.REFRESH}`,
       ))
     )
-      return this.login(user, fcmToken);
+      return this.login(user);
     throw new BadRequestException('invalid token');
   }
 
@@ -282,77 +262,6 @@ export class AuthenticationService {
       updateUserDto,
       user,
     );
-  }
-
-  async signUp(signupDto: SignupDto): Promise<LoginResponseDto> {
-    let user;
-    try {
-      if (signupDto.phoneNumber)
-        user = await this.userService.findOne([
-          new FilterOptionDto({
-            field: 'phoneNumber',
-            operation: FilterOperationEnum.EQ,
-            value: signupDto.phoneNumber,
-          }),
-        ]);
-    } catch {
-      user = null;
-    }
-
-    if (user && user.status === UserStatus.ACTIVE)
-      throw new ConflictException('user already exists');
-
-    if (signupDto.code && signupDto.validateToken) {
-      const { isEqual, phoneNumber } = await this._checkToken(
-        signupDto.code,
-        signupDto.validateToken,
-      );
-
-      if (!isEqual || !phoneNumber) throw new UnauthorizedException();
-
-      const user = await this.userService.findOne([
-        new FilterOptionDto({
-          field: 'phoneNumber',
-          operation: FilterOperationEnum.EQ,
-          value: phoneNumber,
-        }),
-      ]);
-
-      if (!user) throw new NotFoundException();
-      const newUser = await this.userService.update(
-        [
-          new FilterOptionDto({
-            field: '_id',
-            operation: FilterOperationEnum.EQ,
-            value: user.id,
-          }),
-        ],
-        new UpdateUserDto({ status: UserStatus.ACTIVE }),
-        user,
-        { new: true },
-      );
-
-      return await this.login(newUser, signupDto.fcmToken);
-    }
-
-    if (!signupDto.phoneNumber) throw new BadRequestException('invalid inputs');
-
-    const code = await this._sendCode(signupDto.phoneNumber);
-
-    const generatedToken = await this._tokenGenerator(
-      code,
-      signupDto.phoneNumber,
-    );
-
-    if (!user)
-      await this.userService.create(
-        new CreateUserDto({
-          ...signupDto,
-        }),
-        new UserDto({}),
-      );
-
-    return { validateToken: generatedToken } as any;
   }
 
   private async _sendCode(phoneNumber: string) {

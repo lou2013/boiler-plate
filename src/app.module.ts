@@ -8,14 +8,12 @@ import { DatabaseModule } from './shared/database/database.module';
 import { QueueModule } from './shared/queue/queue.module';
 import { RedisModule } from './shared/redis/redis.module';
 import { SentryModule } from './shared/sentry/sentry.module';
-import { NotifyModule } from './shared/notify/notify.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [LoadConfigs],
     }),
-    NotifyModule,
     SentryModule,
     QueueModule,
     DatabaseModule,

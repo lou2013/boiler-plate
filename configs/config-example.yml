@@ -88,10 +88,10 @@ sms:
 loginUrl:
   google: https://people.googleapis.com/v1/people/me/connections?requestMask.includeField=person.names
 
-fcm:
-  projectId:
-  privateKey:
-  clientEmail:
+# fcm:
+#   projectId:
+#   privateKey:
+#   clientEmail:
 
 openSearch:
   host: localhost
