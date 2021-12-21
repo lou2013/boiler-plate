@@ -31,7 +31,7 @@ export class UserService extends MongoBaseService<
       userModel,
       UserDto,
       logger,
-      [{ path: 'avatarId', select: 'hashKey meta.blurHash' }],
+      [],
       undefined,
       (action: string, obj: UserDto) => [`user/${obj.id}`],
     );

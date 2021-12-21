@@ -12,7 +12,7 @@ export class Role extends MongoBaseModel {
   })
   title!: string;
 
-  @Prop({ type: Types.ObjectId, ref: Collection.WORKSPACE, default: '*' })
+  @Prop({ type: String, default: '*' })
   domain!: string;
 
   @Prop({ type: [Types.ObjectId], ref: Collection.PERMISSION, default: [] })

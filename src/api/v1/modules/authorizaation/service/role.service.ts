@@ -25,7 +25,7 @@ export class RoleService extends MongoBaseService<
     protected readonly logger: LoggerService,
     private permissionService: PermissionService,
   ) {
-    super(roleModel, RoleDto, logger, []);
+    super(roleModel, RoleDto, logger, [{ path: 'permissions' }]);
   }
 
   async setPermissions(
