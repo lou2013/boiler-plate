@@ -82,7 +82,7 @@ s3:
     bucketName:
 
 sms:
-  baseUrl: https://services.avapardaz.org/v1/sms
+  baseUrl: https://testservices.avapardaz.org/v1/sms
   organToken:
 
 loginUrl:
