@@ -8,12 +8,6 @@ export abstract class MongoBaseModel extends Document {
     type: Types.ObjectId,
     ref: Collection.USER,
   })
-  ownerId: string;
-
-  @Prop({
-    type: Types.ObjectId,
-    ref: Collection.USER,
-  })
   updatedBy: string;
 
   @Prop({ type: Date })

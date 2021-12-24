@@ -14,7 +14,3 @@ export class Contract extends MongoBaseModel {
 }
 
 export const ContractSchema = SchemaFactory.createForClass(Contract);
-
-ContractSchema.pre('save', function () {
-  if (!this.ownerId || this.ownerId === '') this.ownerId = this._id;
-});

@@ -1,4 +1,4 @@
-import { IsMongoId, IsNumber, IsOptional } from 'class-validator';
+import { IsMongoId, IsOptional } from 'class-validator';
 import { Action } from '../../../../../common/enums/action.enum';
 import { PermissionLevel } from '../enum/permission-level.enum';
 import { PermissionDto } from './permission.dto';

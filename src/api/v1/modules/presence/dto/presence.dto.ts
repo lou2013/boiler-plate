@@ -30,8 +30,8 @@ export class PresenceDto extends MongoBaseDto {
     example: new Types.ObjectId().toHexString(),
   })
   @Transform(
-    ({ obj: { userId } }) => {
-      return userId?.id;
+    ({ obj: { user } }) => {
+      return user?.id;
     },
     { toClassOnly: true },
   )

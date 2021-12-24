@@ -38,7 +38,3 @@ export class User extends MongoBaseModel {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.pre('save', function () {
-  if (!this.ownerId || this.ownerId === '') this.ownerId = this._id;
-});

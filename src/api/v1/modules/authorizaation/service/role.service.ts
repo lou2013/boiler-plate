@@ -47,7 +47,7 @@ export class RoleService extends MongoBaseService<
         });
         return permission;
       } catch (error) {
-        permission = new Permission(p as Permission);
+        permission = new Permission(p);
         await permission.save();
         return permission;
       }
