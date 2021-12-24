@@ -6,6 +6,10 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 import { AuthorizationModule } from './modules/authorizaation/authorization.module';
 import { ErrorModule } from './modules/error/error.module';
 import { PresenceModule } from './modules/presence/presence.module';
+import { CustomerModule } from './modules/customer/customer.moudle';
+import { MedicineModule } from './modules/medicine/medicine.module';
+import { ShipmentModule } from './modules/shipment/shipment.module';
+import { PurchaseModule } from './modules/purchase/purchase.module';
 
 @Module({
   imports: [
@@ -15,6 +19,10 @@ import { PresenceModule } from './modules/presence/presence.module';
     AuthorizationModule,
     ErrorModule,
     PresenceModule,
+    CustomerModule,
+    MedicineModule,
+    ShipmentModule,
+    PurchaseModule,
   ],
 })
 export class V1Module {}

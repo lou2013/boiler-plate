@@ -5,4 +5,8 @@ export enum Collection {
   FILE = 'File',
   ERROR = 'Error',
   PRESENCE = 'Presence',
+  CUSTOMER = 'Customer',
+  MEDICINE = 'Medicine',
+  SHIPMENT = 'Shipment',
+  PURCHASE = 'Purchase',
 }

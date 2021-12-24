@@ -6,4 +6,7 @@ export enum Resource {
   FILE = 'file',
   ERROR = 'Error',
   PRESENCE = 'presence',
+  MEDICINE = 'medicine',
+  SHIPMENT = 'shipment',
+  PURCHASE = 'purchase',
 }
