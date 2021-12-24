@@ -45,6 +45,7 @@
     "@ntegral/nestjs-sentry": "^3.0.6",
     "@opensearch-project/opensearch": "^1.0.0",
     "@sentry/node": "^6.13.3",
+    "@types/mongoose": "^5.11.97",
     "@types/mongoose-paginate-v2": "^1.4.0",
     "@types/sharp": "^0.29.3",
     "bcrypt": "^5.0.1",

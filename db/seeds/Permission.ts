@@ -9,13 +9,13 @@ export default [
     action: Action.MANAGE,
     resource: Resource.ALL,
     level: PermissionLevel.ALL,
-    roles: [new mongoose.Types.ObjectId('222222222222')],
+    roleIds: [new mongoose.Types.ObjectId('222222222222')],
   },
   {
     _id: new mongoose.Types.ObjectId('111111111120'),
     action: Action.MANAGE,
     resource: Resource.FILE,
     level: PermissionLevel.ALL,
-    roles: [new mongoose.Types.ObjectId('222222222222')],
+    roleIds: [new mongoose.Types.ObjectId('222222222222')],
   },
 ];

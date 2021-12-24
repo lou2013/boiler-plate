@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { MaxLength, ValidateNested } from 'class-validator';
 import { PermissionDto } from './permission.dto';
 import { MongoBaseDto } from '../../../../../common/dto/mongo-base.dto';
+import { NestedPermissionDto } from './nested-permission.dto';
+import { Types } from 'mongoose';
 
 export class RoleDto extends MongoBaseDto {
   @Expose()
@@ -25,13 +27,27 @@ export class RoleDto extends MongoBaseDto {
   @MaxLength(50)
   domain!: string;
 
-  @Expose()
+  @Expose({ toClassOnly: true })
   @ApiProperty({
-    type: [PermissionDto],
+    type: [String],
+  })
+  @Transform(({ obj: { permissions } }) => {
+    return permissions?.map((p) => p.id);
+  })
+  permissionIds: string[];
+
+  @Expose({})
+  @ApiProperty({
+    type: [NestedPermissionDto],
   })
   @ValidateNested()
-  @Type(() => PermissionDto)
-  permissions: string[];
+  @Type(() => NestedPermissionDto)
+  @Transform(({ obj: { permissionIds } }) => {
+    return permissionIds?.map((p) => {
+      p instanceof Types.ObjectId ? p.toHexString() : p;
+    });
+  })
+  permissions: NestedPermissionDto[];
 
   constructor(partial: Partial<RoleDto>) {
     super(partial);

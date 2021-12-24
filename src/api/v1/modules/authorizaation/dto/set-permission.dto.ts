@@ -11,7 +11,7 @@ export class SetPermissionDto {
   })
   @ValidateNested()
   @Type(() => NestedPermissionDto)
-  permissions!: NestedPermissionDto[];
+  permissionIds!: NestedPermissionDto[];
 
   constructor(partial: Partial<SetPermissionDto>) {
     Object.assign(this, partial);

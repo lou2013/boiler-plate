@@ -1,4 +1,4 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { MongoBaseModel } from 'src/common/models/mongo-base-model.entity';
 
@@ -15,3 +15,5 @@ export class Presence extends MongoBaseModel {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: string;
 }
+export const PresenceSchema = SchemaFactory.createForClass(Presence);
+PresenceSchema.index({ date: 1, userId: 1 }, { unique: true });

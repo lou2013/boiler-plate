@@ -36,7 +36,7 @@ export class RoleService extends MongoBaseService<
     const role: Role = await super._findById(id, null, {
       populateOptions: [{ path: 'permissions' }],
     });
-    const permissions = await setPermission.permissions.map(async (p) => {
+    const permissions = await setPermission.permissionIds.map(async (p) => {
       p.ownerId = user.id;
       let permission: Permission;
       try {
@@ -53,7 +53,7 @@ export class RoleService extends MongoBaseService<
       }
     });
     await role.$set('permissions', permissions);
-    permissions.forEach(async (p) => (await p).roles.push(role.id));
+    permissions.forEach(async (p) => (await p).roleIds.push(role.id));
     await role.save();
     return super.findById(id);
   }

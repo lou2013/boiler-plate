@@ -16,6 +16,6 @@ export class Role extends MongoBaseModel {
   domain!: string;
 
   @Prop({ type: [Types.ObjectId], ref: Collection.PERMISSION, default: [] })
-  permissions: string[];
+  permissionIds: string[];
 }
 export const RoleSchema = SchemaFactory.createForClass(Role);

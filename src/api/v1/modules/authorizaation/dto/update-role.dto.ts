@@ -13,5 +13,5 @@ export class UpdateRoleDto extends RoleDto {
   domain!: string;
 
   @IsOptional()
-  permissions: string[];
+  permissionIds: string[];
 }

@@ -4,13 +4,13 @@ export default [
     _id: new mongoose.Types.ObjectId('222222222222'),
     title: 'manager',
     domain: '*',
-    permissions: [new mongoose.Types.ObjectId('111111111111')],
+    permissionIds: [new mongoose.Types.ObjectId('111111111111')],
   },
   {
     _id: new mongoose.Types.ObjectId('222222222223'),
     title: 'normal',
     domain: '*',
-    permissions: [
+    permissionIds: [
       new mongoose.Types.ObjectId('111111111112'),
       new mongoose.Types.ObjectId('111111111113'),
       new mongoose.Types.ObjectId('111111111114'),

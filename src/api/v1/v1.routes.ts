@@ -2,6 +2,7 @@ import { V1Module } from './v1.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { ErrorModule } from './modules/error/error.module';
+import { PresenceModule } from './modules/presence/presence.module';
 
 export const V1Routes = {
   path: '/v1',
@@ -13,5 +14,6 @@ export const V1Routes = {
       path: '/user',
       module: UserModule,
     },
+    { path: '/presence', module: PresenceModule },
   ],
 };

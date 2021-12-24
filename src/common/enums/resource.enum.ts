@@ -5,4 +5,5 @@ export enum Resource {
   PERMISSION = 'permission',
   FILE = 'file',
   ERROR = 'Error',
+  PRESENCE = 'presence',
 }

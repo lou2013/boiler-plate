@@ -4,4 +4,5 @@ export enum Collection {
   ROLE = 'Role',
   FILE = 'File',
   ERROR = 'Error',
+  PRESENCE = 'Presence',
 }

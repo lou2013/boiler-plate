@@ -23,7 +23,7 @@ export class CaslAbilityFactory {
       : roles.filter((r) => r.domain === '*');
 
     const permissions = [];
-    roles.forEach((r) => r.permissions.forEach((p) => permissions.push(p)));
+    roles.forEach((r) => r.permissionIds.forEach((p) => permissions.push(p)));
     return this.createWithPermission(permissions, user.id);
   }
 
@@ -31,7 +31,7 @@ export class CaslAbilityFactory {
     const { can, build } = new AbilityBuilder<Ability>(Ability);
 
     (permissions ?? []).forEach((permission) => {
-      if (permission.level == PermissionLevel.OWN) {
+      if (permission.level === PermissionLevel.OWN) {
         can(permission.action, permission.resource, {
           ownerId: { $eq: userId },
         });

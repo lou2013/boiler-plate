@@ -18,6 +18,6 @@ export default class Permission extends MongoBaseModel {
   level!: PermissionLevel;
 
   @Prop({ type: [Types.ObjectId], ref: Collection.ROLE })
-  roles: string[];
+  roleIds: string[];
 }
 export const PermissionSchema = SchemaFactory.createForClass(Permission);
