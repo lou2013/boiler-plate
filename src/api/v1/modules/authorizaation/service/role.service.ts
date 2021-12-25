@@ -8,7 +8,6 @@ import { UserDto } from '../../user/dto/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { PermissionService } from './permission.service';
-import { Redis } from 'ioredis';
 import { MongoBaseService } from '../../../../../common/service/mongo.base.service';
 
 @Injectable()
@@ -25,7 +24,7 @@ export class RoleService extends MongoBaseService<
     protected readonly logger: LoggerService,
     private permissionService: PermissionService,
   ) {
-    super(roleModel, RoleDto, logger, [{ path: 'permissions' }]);
+    super(roleModel, RoleDto, logger, [{ path: 'permissionIds' }]);
   }
 
   async setPermissions(
@@ -34,7 +33,7 @@ export class RoleService extends MongoBaseService<
     user: UserDto,
   ): Promise<RoleDto> {
     const role: Role = await super._findById(id, null, {
-      populateOptions: [{ path: 'permissions' }],
+      populateOptions: [{ path: 'permissionIds' }],
     });
     const permissions = await setPermission.permissionIds.map(async (p) => {
       p.ownerId = user.id;

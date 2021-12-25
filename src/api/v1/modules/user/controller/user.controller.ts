@@ -67,6 +67,8 @@ export class UserController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<UserDto>> {
+    console.log(paginationDto);
+
     return await this.userService.findAll(paginationDto);
   }
 

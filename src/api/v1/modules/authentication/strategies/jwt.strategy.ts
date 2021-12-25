@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         {
           path: 'rolesId',
           populate: {
-            path: 'permissions',
+            path: 'permissionIds',
             select: '-roles',
           },
         },
