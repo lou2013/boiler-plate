@@ -21,7 +21,7 @@ export class Medicine extends MongoBaseModel {
   @Prop({ type: PlaceSchema })
   place: Place;
 
-  @Prop({ type: [Types.ObjectId], ref: Collection.SHIPMENT })
+  @Prop({ type: [Types.ObjectId], ref: Collection.SHIPMENT, default: [] })
   shipmentIds: ObjectId[];
 }
 export const MedicineSchema = SchemaFactory.createForClass(Medicine);

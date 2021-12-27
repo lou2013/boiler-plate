@@ -1,4 +1,10 @@
-import { Ability, AbilityBuilder, ExtractSubjectType } from '@casl/ability';
+import {
+  Ability,
+  AbilityBuilder,
+  AbilityTuple,
+  ExtractSubjectType,
+  Subject,
+} from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { User } from '../../user/model/user.entity';
 import { PermissionLevel } from '../enum/permission-level.enum';
@@ -13,21 +19,32 @@ export type AppAbility = Ability<[Action, Subjects]>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: User, domain: string) {
+  createForUser(
+    user: User,
+    domain: string,
+  ): Ability<AbilityTuple<string, Subject>> {
     return this.createForRoles(user.rolesId as unknown as Role[], domain, user);
   }
 
-  createForRoles(roles: Role[], domain: string, user: User) {
+  createForRoles(
+    roles: Role[],
+    domain: string,
+    user: User,
+  ): Ability<AbilityTuple<string, Subject>> {
     roles = domain
       ? roles.filter((r) => r.domain === domain || r.domain === '*')
       : roles.filter((r) => r.domain === '*');
 
     const permissions = [];
     roles.forEach((r) => r.permissionIds.forEach((p) => permissions.push(p)));
+
     return this.createWithPermission(permissions, user.id);
   }
 
-  createWithPermission(permissions: Permission[], userId: string) {
+  createWithPermission(
+    permissions: Permission[],
+    userId: string,
+  ): Ability<AbilityTuple<string, Subject>> {
     const { can, build } = new AbilityBuilder<Ability>(Ability);
 
     (permissions ?? []).forEach((permission) => {
@@ -40,6 +57,7 @@ export class CaslAbilityFactory {
       }
     });
     return build({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       detectSubjectType: (item: any) =>
         item.constructor as ExtractSubjectType<Resource>,
     });

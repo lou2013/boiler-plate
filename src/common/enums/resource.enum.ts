@@ -9,4 +9,5 @@ export enum Resource {
   MEDICINE = 'medicine',
   SHIPMENT = 'shipment',
   PURCHASE = 'purchase',
+  CUSTOMER = 'customer',
 }

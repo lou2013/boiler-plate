@@ -57,11 +57,11 @@ export class CustomerController {
     type: PaginationResponseDto,
   })
   @ApiOperation({
-    summary: 'get all users',
-    description: 'return the users list with pagination',
+    summary: 'get all customers',
+    description: 'return the customer list with pagination',
   })
   @CheckPolicies((ability: AppAbility) =>
-    ability.can(Action.READ, Resource.PRESENCE),
+    ability.can(Action.READ, Resource.CUSTOMER),
   )
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
@@ -71,16 +71,18 @@ export class CustomerController {
 
   @Post('/')
   @ApiOperation({
-    summary: 'create users',
-    description: 'create new user and return the users data',
+    summary: 'create customers',
+    description: 'create new customer and return the customers data',
   })
   @CheckPolicies((ability: AppAbility) =>
-    ability.can(Action.CREATE, Resource.PRESENCE),
+    ability.can(Action.CREATE, Resource.CUSTOMER),
   )
   async create(
     @Body() createDto: CreateCustomerDto,
     @CurrentUser() user: UserDto,
   ): Promise<CustomerDto> {
+    console.log(createDto);
+
     return await this.customerService.create(createDto, user);
   }
 
@@ -90,11 +92,11 @@ export class CustomerController {
     type: serverErrorDto,
   })
   @ApiOperation({
-    summary: 'get a user with id',
-    description: 'find a user with its id and return it',
+    summary: 'get a cutsomer with id',
+    description: 'find a customer with its id and return it',
   })
   @CheckPolicies((ability: AppAbility) =>
-    ability.can(Action.READ, Resource.PRESENCE),
+    ability.can(Action.READ, Resource.CUSTOMER),
   )
   findOne(@Param('id') id: string): Promise<CustomerDto> {
     return this.customerService.findById(id);
@@ -106,7 +108,7 @@ export class CustomerController {
     type: serverErrorDto,
   })
   @ApiOperation({
-    summary: 'update a user with id',
+    summary: 'update a customer with id',
     description: 'find and update user with its id and return it',
   })
   @CheckPolicies((ability: AppAbility) =>
@@ -140,7 +142,7 @@ export class CustomerController {
     description: 'find and soft delete user with its id and return it',
   })
   @CheckPolicies((ability: AppAbility) =>
-    ability.can(Action.DELETE, Resource.PRESENCE),
+    ability.can(Action.DELETE, Resource.CUSTOMER),
   )
   delete(
     @Param('id') id: string,
