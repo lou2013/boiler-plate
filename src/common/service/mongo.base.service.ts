@@ -47,7 +47,9 @@ export class MongoBaseService<
 > {
   constructor(
     protected model: PaginateModel<T>,
-    protected responseDto: new (result: LeanDocument<T>) => ResponseDto,
+    protected responseDto: new (
+      result: Partial<LeanDocument<T>>,
+    ) => ResponseDto,
     protected readonly logger: LoggerService,
     readonly populate: PopulateOptions[] = [],
     protected parent: MongoParentRelation = null,
@@ -74,8 +76,6 @@ export class MongoBaseService<
       populateOptions: this.populate,
     }),
   ): Promise<PaginationResponseDto<ResponseDto>> {
-    console.log(findOptions);
-
     const result = await this._findAll(paginationDto, findOptions);
     const models = result.rows.map((m) => new this.responseDto(m.toJSON()));
 

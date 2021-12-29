@@ -12,8 +12,9 @@ export const MongoRelationId = (options?: {
 ) => void) =>
   applyDecorators(
     Transform(({ obj }) => {
-      if (isArray(obj[options.fieldName]))
+      if (isArray(obj[options.fieldName])) {
         return obj[options.fieldName]?.map((p) => p.id);
+      }
       return obj[options.fieldName]?.id;
     }) as PropertyDecorator,
   );

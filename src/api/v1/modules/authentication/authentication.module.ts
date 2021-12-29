@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/service/user.service';
@@ -17,6 +17,7 @@ import { DatabaseModule } from '../../../../shared/database/database.module';
 import { RedisModule } from '../../../../shared/redis/redis.module';
 import { AppConfigs } from '../../../../constants/app.configs';
 import { AppConfig } from '../../../../common/config/app.config';
+import { AuthorizationModule } from '../authorizaation/authorization.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AppConfig } from '../../../../common/config/app.config';
     UserModule,
     RedisModule,
     SmsModule,
+    forwardRef(() => AuthorizationModule),
     PassportModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.registerAsync({

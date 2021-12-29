@@ -1,11 +1,18 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { Expose, Transform, Type } from 'class-transformer';
-import { isArray, IsPhoneNumber, IsString, Length } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+import {
+  IsMongoId,
+  IsPhoneNumber,
+  IsString,
+  Length,
+  ValidateNested,
+} from 'class-validator';
 import { MongoBaseDto } from 'src/common/dto/mongo-base.dto';
 import { PurchaseDto } from '../../purchase/dto/purchase.dto';
-import { Types } from 'mongoose';
-import { MongoRelationId } from 'src/common/decorators/mongo-relation-id.decorator';
 import { MongoRelationDto } from 'src/common/decorators/mongo-relation-dto.decorator';
+import { MongoRelationId } from 'src/common/decorators/mongo-relation-id.decorator';
+import { NestedPurchaseDto } from '../../purchase/dto/nested-purchase.dto';
+
 export class CustomerDto extends MongoBaseDto {
   @ApiProperty({
     description: 'the full name of the customer',
@@ -27,14 +34,16 @@ export class CustomerDto extends MongoBaseDto {
 
   @Expose({ toClassOnly: true })
   @MongoRelationId({ fieldName: 'purchases' })
+  @IsMongoId({ each: true })
   purchaseIds: string[];
 
   @ApiProperty({
     description: 'the purchases of the user',
     type: PickType(PurchaseDto, ['id']),
   })
-  @MongoRelationDto({ idFieldName: 'purchaseIds' })
   @Expose({ toPlainOnly: true })
-  @Type(() => PurchaseDto)
-  purchases: PurchaseDto[];
+  @MongoRelationDto({ idFieldName: 'purchaseIds', dto: NestedPurchaseDto })
+  @Type(() => NestedPurchaseDto)
+  @ValidateNested()
+  purchases: NestedPurchaseDto[];
 }

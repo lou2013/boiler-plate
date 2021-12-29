@@ -44,9 +44,9 @@ export class RoleDto extends MongoBaseDto {
   @Type(() => NestedPermissionDto)
   @Transform(({ obj: { permissionIds } }) => {
     return permissionIds?.map((p) => {
-      console.log(permissionIds);
-
-      p instanceof Types.ObjectId ? p.toHexString() : p;
+      return p instanceof Types.ObjectId
+        ? p.toHexString()
+        : new PermissionDto(p);
     });
   })
   permissions: NestedPermissionDto[];

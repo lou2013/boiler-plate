@@ -19,6 +19,6 @@ export class MedicineService extends MongoBaseService<
     @InjectModel(Medicine.name)
     readonly MedicineModel: PaginateModel<Medicine>,
   ) {
-    super(MedicineModel, MedicineDto, logger, [{ path: 'userId' }], undefined);
+    super(MedicineModel, MedicineDto, logger, [], undefined);
   }
 }

@@ -37,6 +37,11 @@ import { AppConfig } from '../../../../../common/config/app.config';
 import { AppConfigs } from '../../../../../constants/app.configs';
 import { VerifyLookupDto } from '../../../../../shared/sms/dto/verify-lookup.dto';
 import { FilterOperationEnum } from 'src/common/enums/filter-operation.enum';
+import { Ability } from '@casl/ability';
+import { ProfileDto } from '../dto/profile.dto';
+import { Resource } from 'src/common/enums/resource.enum';
+import { Action } from 'src/common/enums/action.enum';
+import { NestedUserDto } from '../../user/dto/user-nested.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -264,7 +269,24 @@ export class AuthenticationService {
     );
   }
 
-  private async _sendCode(phoneNumber: string) {
+  async profile(user: UserDto, ability: Ability): Promise<ProfileDto> {
+    const result: Record<Resource, Record<Action, boolean>> = {} as Record<
+      Resource,
+      Record<Action, boolean>
+    >;
+
+    for (const resource of Object.values(Resource)) {
+      if (resource === Resource.ALL) continue;
+
+      result[resource] = {} as any;
+      for (const action of Object.values(Action)) {
+        result[resource][action] = ability.can(action, resource);
+      }
+    }
+    return new ProfileDto({ abilities: result, user: user as NestedUserDto });
+  }
+
+  private async _sendCode(phoneNumber: string): Promise<string> {
     const generatedCode = (Math.floor(Math.random() * 9000) + 1000).toString();
     return (
       await this.smsService.verifyLookup(
@@ -276,7 +298,7 @@ export class AuthenticationService {
     ).data.password;
   }
 
-  private async _delRedis(phoneNumber: string) {
+  private async _delRedis(phoneNumber: string): Promise<void> {
     await this.smsService.verifyLookup(
       plainToClass(VerifyLookupDto, {
         receptor: phoneNumber,
@@ -285,13 +307,16 @@ export class AuthenticationService {
     );
   }
 
-  private async _tokenGenerator(code: string, phoneNumber?: string) {
+  private async _tokenGenerator(
+    code: string,
+    phoneNumber?: string,
+  ): Promise<string> {
     const salt = await genSalt(10);
     const token = await hash(code, salt);
     return this.jwtService.sign({ token, phoneNumber });
   }
 
-  private async _checkToken(code: string, token: string) {
+  private async _checkToken(code: string, token: string): Promise<any> {
     const decodedToken = await this.jwtService.verify(token);
 
     const isEqual = await compare(code, decodedToken.token);

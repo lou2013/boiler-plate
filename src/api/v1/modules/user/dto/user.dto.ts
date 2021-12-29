@@ -1,4 +1,5 @@
 import {
+  IsAlpha,
   IsDate,
   IsEnum,
   IsMobilePhone,
@@ -114,6 +115,8 @@ export class UserDto extends MongoBaseDto {
   @ApiProperty({
     type: ContractDto,
   })
+  @Type(() => ContractDto)
+  @ValidateNested()
   contract: ContractDto;
 
   constructor(partial: Partial<UserDto>) {

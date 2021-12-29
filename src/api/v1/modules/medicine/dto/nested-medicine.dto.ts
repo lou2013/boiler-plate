@@ -1,14 +1,9 @@
-import { Expose } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { NestedShipmentDto } from '../../shipment/dto/nested-shipment.dto';
 import { MedicineTypes } from '../enum/medicine-types.enum';
 import { MedicineDto } from './medicine.dto';
 import { PlaceDto } from './place/palce.dto';
 
-export class UpdateMedicineDto extends MedicineDto {
-  @Expose({ toPlainOnly: true })
-  id: string;
-
+export class NestedMedicineDto extends MedicineDto {
   @IsOptional()
   name: string;
 
@@ -26,7 +21,4 @@ export class UpdateMedicineDto extends MedicineDto {
 
   @IsOptional()
   place: PlaceDto;
-
-  @IsOptional()
-  shipments: NestedShipmentDto[];
 }
