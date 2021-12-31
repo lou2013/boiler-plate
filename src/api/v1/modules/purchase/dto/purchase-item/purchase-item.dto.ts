@@ -22,7 +22,7 @@ export class PurchaseItemDto {
   count: number;
 
   @ApiProperty({ type: NestedMedicineDto })
-  @MongoRelationDto({ dto: NestedMedicineDto, idFieldName: 'medicineId' })
+  @MongoRelationDto({ dto: () => NestedMedicineDto, idFieldName: 'medicineId' })
   @Expose({ toPlainOnly: true })
   @Type(() => NestedMedicineDto)
   medicine: NestedMedicineDto;

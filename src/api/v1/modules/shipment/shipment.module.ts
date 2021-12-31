@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseModule } from 'src/shared/database/database.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { AuthorizationModule } from '../authorizaation/authorization.module';
+import { MedicineModule } from '../medicine/medicine.module';
 import { ShipmentController } from './controller/shipment.controller';
 import { Shipment, ShipmentSchema } from './model/shipment.entity';
 import { ShipmentService } from './service/shipment.service';
@@ -15,6 +16,7 @@ import { ShipmentService } from './service/shipment.service';
     DatabaseModule,
     AuthorizationModule,
     AuthenticationModule,
+    MedicineModule,
   ],
   providers: [ShipmentService, Logger],
   controllers: [ShipmentController],

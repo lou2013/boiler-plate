@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { MongoBaseModel } from 'src/common/models/mongo-base-model.entity';
 
-@Schema({ _id: false, versionKey: false })
-export class Place extends MongoBaseModel {
+@Schema({ _id: false, versionKey: false, timestamps: false })
+export class Place {
   @Prop({ type: String })
   room: string;
 

@@ -42,7 +42,10 @@ export class CustomerDto extends MongoBaseDto {
     type: PickType(PurchaseDto, ['id']),
   })
   @Expose({ toPlainOnly: true })
-  @MongoRelationDto({ idFieldName: 'purchaseIds', dto: NestedPurchaseDto })
+  @MongoRelationDto({
+    idFieldName: 'purchaseIds',
+    dto: () => NestedPurchaseDto,
+  })
   @Type(() => NestedPurchaseDto)
   @ValidateNested()
   purchases: NestedPurchaseDto[];

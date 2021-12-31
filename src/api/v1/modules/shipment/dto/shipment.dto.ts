@@ -15,6 +15,6 @@ export class ShipmentDto extends MongoBaseDto {
   @ApiProperty({ type: [ShipmentItemDto] })
   @Expose()
   @Type(() => ShipmentItemDto)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   items: ShipmentItemDto[];
 }

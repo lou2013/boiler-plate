@@ -1,7 +1,5 @@
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Redis } from 'ioredis';
 import { PaginateModel } from 'mongoose';
 import { CreatePermissionDto } from '../dto/create-permission.dto';
 import { PermissionDto } from '../dto/permission.dto';

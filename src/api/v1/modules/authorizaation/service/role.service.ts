@@ -36,7 +36,6 @@ export class RoleService extends MongoBaseService<
       populateOptions: [{ path: 'permissionIds' }],
     });
     const permissions = await setPermission.permissionIds.map(async (p) => {
-      p.ownerId = user.id;
       let permission: Permission;
       try {
         permission = await this.permissionService._findOne({

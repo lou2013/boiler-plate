@@ -81,7 +81,10 @@ export class ShipmentController {
     @Body() createDto: CreateShipmentDto,
     @CurrentUser() user: UserDto,
   ): Promise<ShipmentDto> {
-    return await this.shipmentService.create(createDto, user);
+    return await this.shipmentService.createShipment({
+      createShipmentDto: createDto,
+      user,
+    });
   }
 
   @Get('/:id')

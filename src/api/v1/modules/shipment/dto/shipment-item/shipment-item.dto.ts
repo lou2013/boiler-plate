@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsMongoId, IsNumber, ValidateNested } from 'class-validator';
+import {
+  IsMongoId,
+  IsNumber,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 import { ObjectId } from 'mongoose';
 import { MongoRelationDto } from 'src/common/decorators/mongo-relation-dto.decorator';
 import { MongoRelationId } from 'src/common/decorators/mongo-relation-id.decorator';
@@ -11,13 +16,14 @@ export class ShipmentItemDto {
     Object.assign(this, partial);
   }
 
-  @MongoRelationId({ fieldName: 'medicine' })
   @Expose({ toClassOnly: true })
+  @IsOptional()
+  @MongoRelationId({ fieldName: 'medicine' })
   @IsMongoId()
-  medicideId: ObjectId;
+  medicineId: ObjectId;
 
   @ApiProperty({ type: () => NestedMedicineDto })
-  @MongoRelationDto({ idFieldName: 'medicideId', dto: NestedMedicineDto })
+  @MongoRelationDto({ idFieldName: 'medicineId', dto: () => NestedMedicineDto })
   @Expose({ toPlainOnly: true })
   @ValidateNested()
   medicine: NestedMedicineDto;

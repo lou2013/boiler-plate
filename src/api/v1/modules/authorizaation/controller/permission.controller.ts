@@ -76,6 +76,8 @@ export class PermissionController {
     @Body() createDto: CreatePermissionDto,
     @CurrentUser() user: UserDto,
   ): Promise<PermissionDto> {
+    console.log(createDto);
+
     return this.permissionService.create(createDto, user);
   }
 
@@ -105,7 +107,7 @@ export class PermissionController {
     @CurrentUser() user: UserDto,
   ): Promise<PermissionDto> {
     return this.permissionService.update(
-      [{ field: 'id', operation: FilterOperationEnum.EQ, value: id }],
+      [{ field: '_id', operation: FilterOperationEnum.EQ, value: id }],
       updateDto,
       user,
     );

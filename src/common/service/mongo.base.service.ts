@@ -158,7 +158,7 @@ export class MongoBaseService<
     filter: FilterOptionDto[],
     updateDto: UpdateQuery<T> | UpdateDTO,
     user: UserDto,
-    options: MongoQueryOptions = {},
+    options: MongoQueryOptions = { new: true },
     parentId: string = null,
   ): Promise<ResponseDto> {
     const resultFilter = [];
@@ -465,7 +465,6 @@ export class MongoBaseService<
           found[this.parent.fieldName].length - 1
         ];
       } else {
-        createDto.ownerId = user.id;
         return await this.model.create(createDto);
       }
     } catch (err) {
@@ -475,7 +474,6 @@ export class MongoBaseService<
 
   async _insertMany(createDtoArray: CreateDTO[], user: UserDto): Promise<T[]> {
     try {
-      createDtoArray.map((item) => (item.ownerId = user.id));
       return await this.model.insertMany(createDtoArray);
     } catch (err) {
       throw new BadRequestException(err.message);

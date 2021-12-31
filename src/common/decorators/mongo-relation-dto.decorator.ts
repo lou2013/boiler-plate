@@ -6,21 +6,33 @@ import { Types } from 'mongoose';
 
 export const MongoRelationDto = (options?: {
   idFieldName: string;
-  dto: new (obj: Record<string, unknown>) => unknown;
+  dto: () => new (obj: Record<string, unknown>) => unknown;
 }): (<TFunction extends Function, Y>(
   target: object | TFunction,
   propertyKey?: string | symbol,
   descriptor?: TypedPropertyDescriptor<Y>,
-) => void) =>
-  applyDecorators(
+) => void) => {
+  return applyDecorators(
     Transform(({ obj }) => {
       if (isArray(obj[options.idFieldName]))
         return obj[options.idFieldName]?.map((p) => {
-          p instanceof Types.ObjectId ? p.toString() : new options.dto(p);
+          return new (options.dto())(
+            p instanceof Types.ObjectId ? { id: p.toString() } : p,
+          );
         });
-      if (obj[options.idFieldName])
-        return obj[options.idFieldName] instanceof Types.ObjectId
-          ? obj[options.idFieldName].toString()
-          : new options.dto(obj[options.idFieldName]);
+      if (obj[options.idFieldName]) {
+        console.log(obj[options.idFieldName] instanceof String);
+
+        const d = new (options.dto())(
+          obj[options.idFieldName] instanceof Types.ObjectId ||
+          obj[options.idFieldName] instanceof String
+            ? { id: obj[options.idFieldName] }
+            : obj[options.idFieldName],
+        );
+        console.log(d);
+
+        return d;
+      }
     }) as PropertyDecorator,
   );
+};

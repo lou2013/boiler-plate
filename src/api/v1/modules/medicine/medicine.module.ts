@@ -18,6 +18,6 @@ import { MedicineService } from './service/medicine.service';
   ],
   providers: [MedicineService, Logger],
   controllers: [MedicineController],
-  exports: [],
+  exports: [MedicineService],
 })
 export class MedicineModule {}

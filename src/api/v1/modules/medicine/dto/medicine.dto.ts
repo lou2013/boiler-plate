@@ -58,13 +58,19 @@ export class MedicineDto extends MongoBaseDto {
   place: PlaceDto;
 
   @Expose({ toClassOnly: true })
+  @IsOptional()
   @MongoRelationId({ fieldName: 'shipments' })
   @IsMongoId({ each: true })
   shipmentIds: ObjectId[];
 
   @ApiProperty({ type: () => [NestedShipmentDto] })
   @Expose({ toPlainOnly: true })
+  @IsOptional()
+  @ValidateNested()
+  @MongoRelationDto({
+    dto: () => NestedShipmentDto,
+    idFieldName: 'shipmentIds',
+  })
   @Type(() => NestedShipmentDto)
-  @MongoRelationDto({ dto: NestedShipmentDto, idFieldName: 'shipmentIds' })
   shipments: NestedShipmentDto[];
 }
