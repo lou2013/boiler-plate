@@ -10,6 +10,7 @@ import { CustomerModule } from './modules/customer/customer.moudle';
 import { MedicineModule } from './modules/medicine/medicine.module';
 import { ShipmentModule } from './modules/shipment/shipment.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
+import { FileModule } from './modules/files/file.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PurchaseModule } from './modules/purchase/purchase.module';
     MedicineModule,
     ShipmentModule,
     PurchaseModule,
+    FileModule,
   ],
 })
 export class V1Module {}

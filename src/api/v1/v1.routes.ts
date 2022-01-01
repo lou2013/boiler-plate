@@ -7,6 +7,7 @@ import { CustomerModule } from './modules/customer/customer.moudle';
 import { MedicineModule } from './modules/medicine/medicine.module';
 import { ShipmentModule } from './modules/shipment/shipment.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
+import { FileModule } from './modules/files/file.module';
 
 export const V1Routes = {
   path: '/v1',
@@ -23,5 +24,6 @@ export const V1Routes = {
     { path: '/medicine', module: MedicineModule },
     { path: '/shipment', module: ShipmentModule },
     { path: '/purchase', module: PurchaseModule },
+    { path: '/file', module: FileModule },
   ],
 };

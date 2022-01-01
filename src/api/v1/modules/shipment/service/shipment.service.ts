@@ -22,7 +22,14 @@ export class ShipmentService extends MongoBaseService<
     readonly shipmentModel: PaginateModel<Shipment>,
     private readonly medicineService: MedicineService,
   ) {
-    super(shipmentModel, ShipmentDto, logger, [], undefined);
+    super(
+      shipmentModel,
+      ShipmentDto,
+      logger,
+      [],
+      // [{ path: 'items.medicineId', select: 'name' }],
+      undefined,
+    );
   }
 
   async createShipment({
@@ -44,7 +51,7 @@ export class ShipmentService extends MongoBaseService<
     return new ShipmentDto(
       (
         await this._findById(d.id, undefined, {
-          populateOptions: [{ path: 'items.medicineId' }],
+          populateOptions: [{ path: 'items.medicineId', select: 'name' }],
         })
       ).toJSON(),
     );

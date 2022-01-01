@@ -13,7 +13,7 @@ import {
   FilterOperationEnum,
 } from '../enums/filter-operation.enum';
 import { escapeLike, escapeRegExp } from '../utils/escape-regex';
-import { plainToClass, classToPlain } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { PaginationResponseDto } from '../dto/pagination-response.dto';
 import { MongoFindOptions } from '../dto/mongo-find-options.dto';
 import { MongoQueryOptions } from '../dto/mongo-query-options.dto';
@@ -26,7 +26,6 @@ import { PopulateOptions } from 'mongoose';
 import { UpdateQuery } from 'mongoose';
 import { FilterQuery } from 'mongoose';
 import { isUndefined } from 'lodash';
-import { serializerOptions } from '../Interceptors/serializer.interceptor';
 
 // type QueryWithHelpers<
 //   ResultType,

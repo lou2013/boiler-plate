@@ -100,7 +100,9 @@ export class ShipmentController {
     ability.can(Action.READ, Resource.SHIPMENT),
   )
   findOne(@Param('id') id: string): Promise<ShipmentDto> {
-    return this.shipmentService.findById(id);
+    return this.shipmentService.findById(id, undefined, {
+      populateOptions: [{ path: 'items.medicineId', select: 'name type' }],
+    });
   }
 
   @Patch('/:id')

@@ -36,6 +36,7 @@ import { CheckPolicies } from '../../../../../common/casl/policy-handler';
 import { PaginationResponseDto } from '../../../../../common/dto/pagination-response.dto';
 import { CurrentUser } from '../../../../../common/decorators/current-user.decorator';
 import { FilterOperationEnum } from '../../../../../common/enums/filter-operation.enum';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags('role')
 @Controller('/role')
@@ -62,7 +63,9 @@ export class RoleController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<RoleDto>> {
-    return await this.roleService.findAll(paginationDto);
+    const result = await this.roleService.findAll(paginationDto);
+    result.items = result.items.map((item) => plainToClass(RoleDto, item));
+    return result;
   }
 
   @Post('/')
@@ -133,7 +136,7 @@ export class RoleController {
     @CurrentUser() user: UserDto,
   ): Promise<RoleDto> {
     return this.roleService.update(
-      [{ field: 'id', operation: FilterOperationEnum.EQ, value: id }],
+      [{ field: '_id', operation: FilterOperationEnum.EQ, value: id }],
       updateDto,
       user,
     );

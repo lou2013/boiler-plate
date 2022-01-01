@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BucketItemStat, Client } from 'minio';
-import { MinioService } from 'nestjs-minio-client';
 import { contentType } from 'mime-types';
 import { S3 } from '../../../common/enums/s3.enum';
 import { AppConfigs } from '../../../constants/app.configs';

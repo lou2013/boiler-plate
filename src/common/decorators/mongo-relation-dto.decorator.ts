@@ -20,19 +20,12 @@ export const MongoRelationDto = (options?: {
             p instanceof Types.ObjectId ? { id: p.toString() } : p,
           );
         });
-      if (obj[options.idFieldName]) {
-        console.log(obj[options.idFieldName] instanceof String);
-
-        const d = new (options.dto())(
-          obj[options.idFieldName] instanceof Types.ObjectId ||
-          obj[options.idFieldName] instanceof String
+      if (obj[options.idFieldName])
+        return new (options.dto())(
+          typeof obj[options.idFieldName] === 'string'
             ? { id: obj[options.idFieldName] }
             : obj[options.idFieldName],
         );
-        console.log(d);
-
-        return d;
-      }
     }) as PropertyDecorator,
   );
 };

@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { S3Service } from './service/s3.service';
 import { S3 } from '../../common/enums/s3.enum';
 

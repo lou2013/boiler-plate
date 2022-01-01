@@ -37,6 +37,7 @@ import { CreatePurchaseDto } from '../dto/create-purchase.dto';
 import { UserDto } from '../../user/dto/user.dto';
 import { UpdatePurchaseDto } from '../dto/update-purchase.dto';
 import { PurchaseService } from '../service/purchase.service';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags(Collection.PURCHASE)
 @Controller('/')
@@ -66,7 +67,11 @@ export class PurchaseController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<PurchaseDto>> {
-    return await this.purchaseService.findAll(paginationDto);
+    const result = await this.purchaseService.findAll(paginationDto);
+    result.items = result.items.map((item) => {
+      return plainToClass(PurchaseDto, item);
+    });
+    return result;
   }
 
   @Post('/')

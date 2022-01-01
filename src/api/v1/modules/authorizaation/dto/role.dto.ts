@@ -1,10 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
-import { MaxLength, ValidateNested } from 'class-validator';
+import {
+  IsMongoId,
+  IsOptional,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
 import { PermissionDto } from './permission.dto';
 import { MongoBaseDto } from '../../../../../common/dto/mongo-base.dto';
 import { NestedPermissionDto } from './nested-permission.dto';
 import { Types } from 'mongoose';
+import { MongoRelationId } from 'src/common/decorators/mongo-relation-id.decorator';
+import { MongoRelationDto } from 'src/common/decorators/mongo-relation-dto.decorator';
 
 export class RoleDto extends MongoBaseDto {
   @Expose()
@@ -31,23 +38,19 @@ export class RoleDto extends MongoBaseDto {
   @ApiProperty({
     type: [String],
   })
-  @Transform(({ obj: { permissions } }) => {
-    return permissions?.map((p) => p.id);
-  })
+  @IsOptional()
+  @MongoRelationId({ fieldName: 'permissions' })
   permissionIds: string[];
 
-  @Expose({})
+  @Expose({ toClassOnly: true })
   @ApiProperty({
     type: [NestedPermissionDto],
   })
   @ValidateNested()
   @Type(() => NestedPermissionDto)
-  @Transform(({ obj: { permissionIds } }) => {
-    return permissionIds?.map((p) => {
-      return p instanceof Types.ObjectId
-        ? p.toHexString()
-        : new PermissionDto(p);
-    });
+  @MongoRelationDto({
+    dto: () => NestedPermissionDto,
+    idFieldName: 'permissions',
   })
   permissions: NestedPermissionDto[];
 
