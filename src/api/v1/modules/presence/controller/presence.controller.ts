@@ -67,7 +67,9 @@ export class PresenceController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<PresenceDto>> {
-    return await this.pressenceService.findAll(paginationDto);
+    const result = await this.pressenceService.findAll(paginationDto);
+    result.items = result.items.map((item) => plainToClass(PresenceDto, item));
+    return result;
   }
 
   //   @Get('/search')

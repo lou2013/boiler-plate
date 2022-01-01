@@ -20,6 +20,7 @@ export const MongoRelationDto = (options?: {
             p instanceof Types.ObjectId ? { id: p.toString() } : p,
           );
         });
+
       if (obj[options.idFieldName])
         return new (options.dto())(
           typeof obj[options.idFieldName] === 'string'

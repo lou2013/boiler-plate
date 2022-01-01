@@ -35,6 +35,7 @@ import { MakeAbilityGuard } from '../../../../../common/guards/make-ability.guar
 import { PoliciesGuard } from '../../../../../common/guards/policy.guard';
 import { CheckPolicies } from '../../../../../common/casl/policy-handler';
 import { FilterOperationEnum } from '../../../../../common/enums/filter-operation.enum';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags('permission')
 @Controller('/permission')
@@ -61,7 +62,11 @@ export class PermissionController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<PermissionDto>> {
-    return await this.permissionService.findAll(paginationDto);
+    const result = await this.permissionService.findAll(paginationDto);
+    result.items = result.items.map((item) =>
+      plainToClass(PermissionDto, item),
+    );
+    return result;
   }
 
   @Post('/')
@@ -76,8 +81,6 @@ export class PermissionController {
     @Body() createDto: CreatePermissionDto,
     @CurrentUser() user: UserDto,
   ): Promise<PermissionDto> {
-    console.log(createDto);
-
     return this.permissionService.create(createDto, user);
   }
 

@@ -52,6 +52,7 @@ export class RoleDto extends MongoBaseDto {
     dto: () => NestedPermissionDto,
     idFieldName: 'permissions',
   })
+  @IsOptional()
   permissions: NestedPermissionDto[];
 
   constructor(partial: Partial<RoleDto>) {

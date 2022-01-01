@@ -37,6 +37,7 @@ import { MedicineService } from '../service/medicine.service';
 import { CreateMedicineDto } from '../dto/create-medicine.dto';
 import { UserDto } from '../../user/dto/user.dto';
 import { UpdateMedicineDto } from '../dto/update-medicine.dto';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags(Collection.MEDICINE)
 @Controller('/')
@@ -66,7 +67,9 @@ export class MedicineController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<MedicineDto>> {
-    return await this.medicineService.findAll(paginationDto);
+    const result = await this.medicineService.findAll(paginationDto);
+    result.items = result.items.map((item) => plainToClass(MedicineDto, item));
+    return result;
   }
 
   @Post('/')

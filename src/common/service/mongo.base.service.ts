@@ -585,54 +585,18 @@ export class MongoBaseService<
       for (const iterator of Object.keys(updateDto)) {
         isUndefined(updateDto[iterator]) && delete updateDto[iterator];
       }
-      if (this.parent) {
-        const updateField = {};
-        Object.keys(updateDto).map((item) =>
-          item.toString()[0] !== '$'
-            ? (updateField[`${this.parent.fieldName}.$.${item}`] =
-                updateDto[item])
-            : (updateField[item] = updateDto[item]),
-        );
+      const found = await this.model.findOneAndUpdate(
+        {
+          ...filter,
+          deletedAt: { $exists: false },
+        } as FilterQuery<T>,
+        { ...updateDto, updatedBy: user.id },
+        { ...options, runValidators: true },
+      );
 
-        const found = await this.parent.service._update(
-          {
-            _id: parentId,
-            [this.parent.fieldName]: {
-              $elemMatch: { ...filter, deletedAt: { $exists: false } },
-            },
-          },
-          updateField,
-          { new: true, upsert: true },
-          user,
-        );
-        if (!found)
-          throw new NotFoundException(
-            `${this.parent.service.model.collection.name} not found`,
-          );
-
-        // TODO fix [0]
-        if (!found[this.parent.fieldName][0])
-          throw new NotFoundException(
-            `${this.model.collection.name} not found`,
-          );
-
-        return found[this.parent.fieldName][0];
-      } else {
-        const found = await this.model.findOneAndUpdate(
-          {
-            ...filter,
-            deletedAt: { $exists: false },
-          } as FilterQuery<T>,
-          { ...updateDto, updatedBy: user.id },
-          { ...options },
-        );
-
-        if (!found)
-          throw new NotFoundException(
-            `${this.model.collection.name} not found`,
-          );
-        return found;
-      }
+      if (!found)
+        throw new NotFoundException(`${this.model.collection.name} not found`);
+      return found;
     } catch (err) {
       throw new BadRequestException(err.message);
     }

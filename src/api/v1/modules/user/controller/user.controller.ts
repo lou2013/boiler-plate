@@ -67,7 +67,11 @@ export class UserController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<UserDto>> {
-    return await this.userService.findAll(paginationDto);
+    const result = await this.userService.findAll(paginationDto);
+    result.items = result.items.map((item) => {
+      return plainToClass(UserDto, item);
+    });
+    return result;
   }
 
   @Get('/search')

@@ -52,6 +52,14 @@ export class FileDto extends MongoBaseDto {
   meta: FileMetaDto;
 
   @Expose({ toPlainOnly: true })
+  @IsOptional()
+  @ApiProperty({
+    type: String,
+    readOnly: true,
+  })
+  hashKey: string;
+
+  @Expose({ toPlainOnly: true })
   @ApiProperty({
     readOnly: true,
   })

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { IsMongoId, IsNumber } from 'class-validator';
 import { ObjectId } from 'mongoose';
@@ -14,14 +14,19 @@ export class PurchaseItemDto {
   @MongoRelationId({ fieldName: 'medicine' })
   @Expose({ toClassOnly: true })
   @IsMongoId({ each: true })
-  medicideId: ObjectId;
+  medicineId: ObjectId;
 
   @ApiProperty({ example: 12 })
   @Expose()
   @IsNumber()
   count: number;
 
-  @ApiProperty({ type: NestedMedicineDto })
+  @ApiProperty({
+    type: class NestedMedicinePurchaseItemDto extends PickType<
+      NestedMedicineDto,
+      keyof NestedMedicineDto
+    >(NestedMedicineDto, ['id', 'name']) {},
+  })
   @MongoRelationDto({ dto: () => NestedMedicineDto, idFieldName: 'medicineId' })
   @Expose({ toPlainOnly: true })
   @Type(() => NestedMedicineDto)

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { Types } from 'mongoose';
 export class MongoBaseDto {
-  @ApiProperty({ readOnly: true, example: new Types.ObjectId() })
+  @ApiProperty({ example: new Types.ObjectId() })
   @Expose()
   id?: string;
 

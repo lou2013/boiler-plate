@@ -16,7 +16,7 @@ export class Medicine extends MongoBaseModel {
   @Prop({ type: String, enum: MedicineTypes, default: MedicineTypes.Other })
   type: MedicineTypes;
 
-  @Prop({ type: Number })
+  @Prop({ type: Number, validate: (n) => n > 0 })
   count: number;
 
   @Prop({ type: String })

@@ -19,6 +19,9 @@ export class File extends MongoBaseModel {
   fileName: string;
 
   @Prop({})
+  hashKey: string;
+
+  @Prop({})
   meta: FileMetaDto;
 
   @Prop({})

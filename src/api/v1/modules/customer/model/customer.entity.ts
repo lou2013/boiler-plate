@@ -11,7 +11,7 @@ export class Customer extends MongoBaseModel {
   @Prop({ unique: true })
   phoneNumber!: string;
 
-  @Prop({ type: [Types.ObjectId], ref: Collection.USER, default: [] })
+  @Prop({ type: [Types.ObjectId], ref: Collection.PURCHASE, default: [] })
   purchaseIds: string[];
 }
 export const CustomerSchema = SchemaFactory.createForClass(Customer);

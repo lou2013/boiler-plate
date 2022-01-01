@@ -37,6 +37,7 @@ import { UpdateUserDto } from '../../user/dto/update-user.dto';
 import { CustomerService } from '../service/customer.service';
 import { CustomerDto } from '../dto/customer.dto';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags(Collection.CUSTOMER)
 @Controller('/')
@@ -66,7 +67,11 @@ export class CustomerController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<CustomerDto>> {
-    return await this.customerService.findAll(paginationDto);
+    const result = await this.customerService.findAll(paginationDto);
+    result.items = result.items.map((item) => {
+      return plainToClass(CustomerDto, item);
+    });
+    return result;
   }
 
   @Post('/')
@@ -81,8 +86,6 @@ export class CustomerController {
     @Body() createDto: CreateCustomerDto,
     @CurrentUser() user: UserDto,
   ): Promise<CustomerDto> {
-    console.log(createDto);
-
     return await this.customerService.create(createDto, user);
   }
 
@@ -99,7 +102,15 @@ export class CustomerController {
     ability.can(Action.READ, Resource.CUSTOMER),
   )
   findOne(@Param('id') id: string): Promise<CustomerDto> {
-    return this.customerService.findById(id);
+    return this.customerService.findById(id, undefined, {
+      populateOptions: [
+        {
+          path: 'purchaseIds',
+          select: '-customerId',
+          populate: { path: 'purchaseItems.medicineId', select: 'name' },
+        },
+      ],
+    });
   }
 
   @Patch('/:id')

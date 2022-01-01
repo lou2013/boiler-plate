@@ -37,6 +37,7 @@ import { ShipmentService } from '../service/shipment.service';
 import { CreateShipmentDto } from '../dto/create-shipment.dto';
 import { UserDto } from '../../user/dto/user.dto';
 import { UpdateShipmentDto } from '../dto/update-shipment.dto';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags(Collection.SHIPMENT)
 @Controller('/')
@@ -66,7 +67,9 @@ export class ShipmentController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<ShipmentDto>> {
-    return await this.shipmentService.findAll(paginationDto);
+    const result = await this.shipmentService.findAll(paginationDto);
+    result.items = result.items.map((item) => plainToClass(ShipmentDto, item));
+    return result;
   }
 
   @Post('/')

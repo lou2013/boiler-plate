@@ -3,6 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseModule } from 'src/shared/database/database.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { AuthorizationModule } from '../authorizaation/authorization.module';
+import { CustomerModule } from '../customer/customer.moudle';
+import { MedicineModule } from '../medicine/medicine.module';
 import { PurchaseController } from './controller/purchase.controller';
 import { Purchase, PurchaseSchema } from './model/purchase.entity';
 import { PurchaseService } from './service/purchase.service';
@@ -15,6 +17,8 @@ import { PurchaseService } from './service/purchase.service';
     DatabaseModule,
     AuthorizationModule,
     AuthenticationModule,
+    MedicineModule,
+    CustomerModule,
   ],
   providers: [PurchaseService, Logger],
   controllers: [PurchaseController],

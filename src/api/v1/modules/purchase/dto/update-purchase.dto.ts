@@ -12,4 +12,7 @@ export class UpdatePurchaseDto extends PurchaseDto {
 
   @IsOptional()
   totalAmount: number;
+
+  @IsOptional()
+  receipt: string;
 }

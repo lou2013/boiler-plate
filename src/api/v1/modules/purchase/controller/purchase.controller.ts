@@ -86,7 +86,10 @@ export class PurchaseController {
     @Body() createDto: CreatePurchaseDto,
     @CurrentUser() user: UserDto,
   ): Promise<PurchaseDto> {
-    return await this.purchaseService.create(createDto, user);
+    return await this.purchaseService.createPurchase({
+      createPurchaseDto: createDto,
+      user,
+    });
   }
 
   @Get('/:id')
@@ -101,8 +104,13 @@ export class PurchaseController {
   @CheckPolicies((ability: AppAbility) =>
     ability.can(Action.READ, Resource.PURCHASE),
   )
-  findOne(@Param('id') id: string): Promise<PurchaseDto> {
-    return this.purchaseService.findById(id);
+  async findOne(@Param('id') id: string): Promise<PurchaseDto> {
+    return await this.purchaseService.findById(id, undefined, {
+      populateOptions: [
+        { path: 'customerId', select: 'fullName phoneNumber' },
+        { path: 'purchaseItems.medicineId', select: 'name' },
+      ],
+    });
   }
 
   @Patch('/:id')
