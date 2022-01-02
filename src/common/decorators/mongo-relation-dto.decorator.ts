@@ -4,6 +4,7 @@ import { Transform } from 'class-transformer';
 import { isArray } from 'class-validator';
 import { Types } from 'mongoose';
 
+// @Expose({ toPlainOnly: true }) must be used
 export const MongoRelationDto = (options?: {
   idFieldName: string;
   dto: () => new (obj: Record<string, unknown>) => unknown;

@@ -68,9 +68,9 @@ export class CustomerController {
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<CustomerDto>> {
     const result = await this.customerService.findAll(paginationDto);
-    result.items = result.items.map((item) => {
-      return plainToClass(CustomerDto, item);
-    });
+    // result.items = result.items.map((item) => {
+    //   return plainToClass(CustomerDto, item);
+    // });
     return result;
   }
 

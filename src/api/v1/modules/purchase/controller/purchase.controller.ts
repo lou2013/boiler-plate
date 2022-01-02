@@ -67,9 +67,9 @@ export class PurchaseController {
   async findAll(
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<PurchaseDto>> {
-    const result = await this.purchaseService.findAll(paginationDto);
-    result.items = result.items.map((item) => {
-      return plainToClass(PurchaseDto, item);
+    const result = await this.purchaseService.findAll(paginationDto, {
+      select: '-purchaseItems',
+      populateOptions: [{ path: 'customerId', select: 'fullName phoneNumber' }],
     });
     return result;
   }

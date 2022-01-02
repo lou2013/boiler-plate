@@ -20,7 +20,7 @@ import { MongoQueryOptions } from '../dto/mongo-query-options.dto';
 import { UserDto } from '../../api/v1/modules/user/dto/user.dto';
 import { MongoBaseDto } from '../dto/mongo-base.dto';
 import { MongoParentRelation } from 'types/mongo-parent-relation.interface';
-import { PaginateModel } from 'mongoose';
+import { ClientSession, PaginateModel } from 'mongoose';
 import { LeanDocument } from 'mongoose';
 import { PopulateOptions } from 'mongoose';
 import { UpdateQuery } from 'mongoose';
@@ -130,9 +130,10 @@ export class MongoBaseService<
     createDto: CreateDTO,
     user: UserDto,
     parentId: string = null,
+    transaction: ClientSession = null,
   ): Promise<ResponseDto> {
     const result = new this.responseDto(
-      (await this._create(createDto, user, parentId)).toJSON(),
+      (await this._create(createDto, user, parentId, transaction)).toJSON(),
     );
 
     this.findById(result.id, parentId, {
@@ -279,6 +280,7 @@ export class MongoBaseService<
         } as FilterQuery<T>,
         {
           sort: this.sortFieldsFromDto(paginationDto),
+          select: findOptions.select,
           page: paginationDto.page,
           projection: findOptions.projection,
           options: findOptions.options,
@@ -437,6 +439,7 @@ export class MongoBaseService<
     createDto: CreateDTO,
     user: UserDto,
     parentId: string = null,
+    transaction: ClientSession = null,
   ): Promise<T> {
     try {
       if (this.parent) {
@@ -464,7 +467,9 @@ export class MongoBaseService<
           found[this.parent.fieldName].length - 1
         ];
       } else {
-        return await this.model.create(createDto);
+        const model = new this.model(createDto);
+        await model.save({ session: transaction });
+        return model;
       }
     } catch (err) {
       throw new BadRequestException(err.message);
@@ -580,6 +585,7 @@ export class MongoBaseService<
     options: MongoQueryOptions,
     user: UserDto,
     parentId: string = null,
+    transaction: ClientSession = null,
   ): Promise<T> {
     try {
       for (const iterator of Object.keys(updateDto)) {
@@ -591,7 +597,7 @@ export class MongoBaseService<
           deletedAt: { $exists: false },
         } as FilterQuery<T>,
         { ...updateDto, updatedBy: user.id },
-        { ...options, runValidators: true },
+        { ...options, runValidators: true, session: transaction },
       );
 
       if (!found)

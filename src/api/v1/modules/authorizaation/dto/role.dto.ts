@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
 import {
+  isArray,
   IsMongoId,
   IsOptional,
   MaxLength,
@@ -34,26 +35,50 @@ export class RoleDto extends MongoBaseDto {
   @MaxLength(50)
   domain!: string;
 
-  @Expose({ toClassOnly: true })
-  @ApiProperty({
-    type: [String],
-  })
-  @IsOptional()
-  @MongoRelationId({ fieldName: 'permissions' })
-  permissionIds: string[];
-
-  @Expose({ toClassOnly: true })
+  @Expose({ toPlainOnly: true })
   @ApiProperty({
     type: [NestedPermissionDto],
   })
   @ValidateNested()
   @Type(() => NestedPermissionDto)
+  // @Transform(({ obj }) => {
+  //   // console.log(obj);
+
+  //   if (isArray(obj['permissionIds']))
+  //     return obj['permissionIds']?.map((p) => {
+  //       return new NestedPermissionDto(
+  //         p instanceof Types.ObjectId ? { id: p.toString() } : p,
+  //       );
+  //     });
+
+  //   if (obj['permissionIds'])
+  //     return new NestedPermissionDto(
+  //       typeof obj['permissionIds'] === 'string'
+  //         ? { id: obj['permissionIds'] }
+  //         : obj['permissionIds'],
+  //     );
+  // })
   @MongoRelationDto({
     dto: () => NestedPermissionDto,
-    idFieldName: 'permissions',
+    idFieldName: 'permissionIds',
   })
   @IsOptional()
   permissions: NestedPermissionDto[];
+
+  @Expose({ toClassOnly: true })
+  @ApiProperty({
+    type: [String],
+  })
+  @IsOptional()
+  // @Transform(({ obj }) => {
+  //   // console.log(obj);
+  //   if (isArray(obj['permissions'])) {
+  //     return obj['permissions']?.map((p) => p.id);
+  //   }
+  //   return obj['permissions']?.id;
+  // })
+  @MongoRelationId({ fieldName: 'permissions' })
+  permissionIds: string[];
 
   constructor(partial: Partial<RoleDto>) {
     super(partial);

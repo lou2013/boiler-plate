@@ -68,7 +68,7 @@ export class MedicineController {
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<MedicineDto>> {
     const result = await this.medicineService.findAll(paginationDto);
-    result.items = result.items.map((item) => plainToClass(MedicineDto, item));
+    // result.items = result.items.map((item) => plainToClass(MedicineDto, item));
     return result;
   }
 

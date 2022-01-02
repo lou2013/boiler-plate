@@ -68,7 +68,7 @@ export class ShipmentController {
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<ShipmentDto>> {
     const result = await this.shipmentService.findAll(paginationDto);
-    result.items = result.items.map((item) => plainToClass(ShipmentDto, item));
+    // result.items = result.items.map((item) => plainToClass(ShipmentDto, item));
     return result;
   }
 

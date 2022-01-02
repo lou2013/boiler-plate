@@ -30,6 +30,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ],
       });
     } catch (error) {
+      console.log(error);
+
       if (error.status === 404) {
         throw new UnauthorizedException('Unauthenticated');
       }

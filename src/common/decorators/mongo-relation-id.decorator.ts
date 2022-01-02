@@ -2,7 +2,9 @@
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { isArray } from 'class-validator';
+import { log } from 'console';
 
+//  @Expose({ toClassOnly: true }) must be used
 export const MongoRelationId = (options?: {
   fieldName: string;
 }): (<TFunction extends Function, Y>(

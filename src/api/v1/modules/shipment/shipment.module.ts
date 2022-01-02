@@ -1,6 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseModule } from 'src/shared/database/database.module';
+import { MongoDbModule } from 'src/shared/database/mongo/mongo-db.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { AuthorizationModule } from '../authorizaation/authorization.module';
 import { MedicineModule } from '../medicine/medicine.module';
@@ -17,6 +18,7 @@ import { ShipmentService } from './service/shipment.service';
     AuthorizationModule,
     AuthenticationModule,
     MedicineModule,
+    MongoDbModule,
   ],
   providers: [ShipmentService, Logger],
   controllers: [ShipmentController],
