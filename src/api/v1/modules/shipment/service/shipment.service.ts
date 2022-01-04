@@ -46,10 +46,10 @@ export class ShipmentService extends MongoBaseService<
     createShipmentDto: CreateShipmentDto;
     user: UserDto;
   }): Promise<ShipmentDto> {
-    const session = await this.mongodb.getDbConnection().startSession({});
-    session.startTransaction({ maxTimeMS: 10000, maxCommitTimeMS: 10000 });
+    // const session = await this.mongodb.getDbConnection().startSession({});
+    // session.startTransaction({ maxTimeMS: 10000, maxCommitTimeMS: 10000 });
     try {
-      const d = await this._create(createShipmentDto, user, undefined, session);
+      const d = await this._create(createShipmentDto, user, undefined);
       for (const item of createShipmentDto.items) {
         await this.medicineService._update(
           { _id: item.medicineId },
@@ -57,12 +57,12 @@ export class ShipmentService extends MongoBaseService<
           { new: true },
           user,
           undefined,
-          session,
+          // session,
         );
         throw new BadRequestException('test');
       }
-      await session.commitTransaction();
-      await session.abortTransaction();
+      // await session.commitTransaction();
+      // await session.abortTransaction();
       return new ShipmentDto(
         (
           await this._findById(d.id, undefined, {
@@ -71,8 +71,8 @@ export class ShipmentService extends MongoBaseService<
         ).toJSON(),
       );
     } catch (error) {
-      session.endSession();
-      await session.abortTransaction();
+      // session.endSession();
+      // await session.abortTransaction();
       throw error;
     }
   }
