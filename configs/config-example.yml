@@ -66,10 +66,14 @@ mongo:
     url: mongodb://localhost
     dbName: 'test'
     port: '27017'
+    replicaSet: 'rs0'
+    replicaMode: true
   main:
     url: mongodb://localhost
-    dbName: 'modirlo'
+    dbName: 'abc'
     port: '27017'
+    replicaSet: 'rs0'
+    replicaMode: true
 
 sentry:
   url: https://46a885f6b8464254ad4a64f586ca0ca5@sentry.mobit.ir/12

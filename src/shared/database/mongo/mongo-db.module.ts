@@ -17,9 +17,13 @@ import { MongoDbService } from './mongo-db.service';
           configService.get<string>('NODE_ENV') === 'test'
             ? configService.get<MongoDbConfig>(AppConfigs.MONGO_TEST)
             : configService.get<MongoDbConfig>(AppConfigs.MONGO_MAIN);
+        console.log(config);
 
         return {
-          uri: `${config.url}:${config.port}/${config.dbName}`,
+          uri: config.replicaMode
+            ? `${config.url}:${config.port}/${config.dbName}/?replicaSet=${config.replicaSet}`
+            : `${config.url}:${config.port}/${config.dbName}`,
+          directConnection: true,
           connectionFactory: (connection) => {
             connection.plugin(IdPlugin);
             connection.plugin(TimestampPlugin);

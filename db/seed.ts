@@ -19,7 +19,9 @@ const dbName = process.env.MAIN_DB_NAME;
 
 async function importCollection(c: string, drop = false): Promise<void> {
   // Use connect method to connect to the server
-  const client = await MongoClient.connect(MONGO_URL, {});
+  const client = await MongoClient.connect(MONGO_URL, {
+    directConnection: true,
+  });
 
   const db = client.db(dbName);
 
