@@ -59,7 +59,6 @@ export class ShipmentService extends MongoBaseService<
           undefined,
           // session,
         );
-        throw new BadRequestException('test');
       }
       // await session.commitTransaction();
       // await session.abortTransaction();
