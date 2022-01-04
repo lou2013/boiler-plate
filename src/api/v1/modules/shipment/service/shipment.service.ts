@@ -34,7 +34,7 @@ export class ShipmentService extends MongoBaseService<
       ShipmentDto,
       logger,
       // [],
-      [{ path: 'items.medicineId', select: 'name' }],
+      [{ path: 'items.medicineId', select: 'name type' }],
       undefined,
     );
   }
