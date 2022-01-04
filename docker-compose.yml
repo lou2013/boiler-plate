@@ -18,14 +18,14 @@ services:
   mongo:
     image: m.docker-registry.ir/mongo:4.4.6
     container_name: mongo
-    entrypoint: mongod --bind_ip_all --replSet rs0
-    command: --wiredTigerCacheSizeGB 1
-    volumes:
-      - ./docker-data/mongodb_replicaset:/data/db
-    networks:
-      - mongodb_replicaset_network
+    # entrypoint: mongod --bind_ip_all --replSet rs0
+    # command: --wiredTigerCacheSizeGB 1
     # volumes:
-    #   - ./docker-data/mongo:/data/db
+    #   - ./docker-data/mongodb_replicaset:/data/db
+    # networks:
+    #   - mongodb_replicaset_network
+    volumes:
+      - ./docker-data/mongo:/data/db
     environment:
       - TZ=Asia/Tehrans
     ports:
@@ -51,8 +51,8 @@ services:
     restart: always
     ports:
       - 1234:80
-networks:
-  mongodb_replicaset_network:
+# networks:
+#   mongodb_replicaset_network:
 
   # opensearch-node1:
   #   image: m.docker-registry.ir/opensearchproject/opensearch:1.1.0
