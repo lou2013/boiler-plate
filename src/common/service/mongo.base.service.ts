@@ -285,8 +285,8 @@ export class MongoBaseService<
         {
           sort: this.sortFieldsFromDto(paginationDto),
           select: findOptions.select,
-          page: paginationDto.page,
-          offset: !paginationDto.page ? paginationDto.offset : 0,
+          page: !paginationDto.offset ? paginationDto.page : undefined,
+          offset: paginationDto.offset ?? 0,
           projection: findOptions.projection,
           options: findOptions.options,
           limit: paginationDto.limit,
