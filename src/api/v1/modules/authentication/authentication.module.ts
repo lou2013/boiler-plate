@@ -18,6 +18,7 @@ import { RedisModule } from '../../../../shared/redis/redis.module';
 import { AppConfigs } from '../../../../constants/app.configs';
 import { AppConfig } from '../../../../common/config/app.config';
 import { AuthorizationModule } from '../authorizaation/authorization.module';
+import { PresenceModule } from '../presence/presence.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthorizationModule } from '../authorizaation/authorization.module';
     RedisModule,
     SmsModule,
     forwardRef(() => AuthorizationModule),
+    forwardRef(() => PresenceModule),
     PassportModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.registerAsync({

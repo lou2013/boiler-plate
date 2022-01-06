@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Transform } from 'class-transformer';
-import { IsDate, IsMongoId, IsString } from 'class-validator';
+import { Expose } from 'class-transformer';
+import { IsDate, IsMongoId, IsOptional, IsString } from 'class-validator';
 import { MongoBaseDto } from 'src/common/dto/mongo-base.dto';
 import { Types } from 'mongoose';
 import { NestedUserDto } from '../../user/dto/user-nested.dto';
+import { MongoRelationDto } from 'src/common/decorators/mongo-relation-dto.decorator';
+import { MongoRelationId } from 'src/common/decorators/mongo-relation-id.decorator';
 export class PresenceDto extends MongoBaseDto {
   @ApiProperty({ description: 'the enter time', example: new Date() })
   @Expose()
@@ -24,27 +26,17 @@ export class PresenceDto extends MongoBaseDto {
   date: string;
 
   @Expose({ toClassOnly: true })
+  @IsOptional()
   @IsMongoId()
   @ApiProperty({
     description: 'the id of the refrenced user',
     example: new Types.ObjectId().toHexString(),
   })
-  @Transform(
-    ({ obj: { user } }) => {
-      return user?.id;
-    },
-    { toClassOnly: true },
-  )
+  @MongoRelationId({ fieldName: 'user' })
   userId: string;
 
-  @Transform(
-    ({ obj: { userId } }) => {
-      return new NestedUserDto(
-        userId instanceof Types.ObjectId ? { id: userId.toString() } : userId,
-      );
-    },
-    { toPlainOnly: true },
-  )
-  @Expose()
+  @IsOptional()
+  @MongoRelationDto({ dto: () => NestedUserDto, idFieldName: 'userId' })
+  @Expose({ toPlainOnly: true })
   user: NestedUserDto;
 }

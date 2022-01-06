@@ -121,7 +121,11 @@ export class MongoBaseService<
     );
     return new this.responseDto(
       (
-        await this._findOne({ $and: [...resultFilter] }, findOptions, parentId)
+        await this._findOne(
+          { $and: [...resultFilter] } as FilterQuery<T>,
+          findOptions,
+          parentId,
+        )
       ).toJSON(),
     );
   }
@@ -282,6 +286,7 @@ export class MongoBaseService<
           sort: this.sortFieldsFromDto(paginationDto),
           select: findOptions.select,
           page: paginationDto.page,
+          offset: !paginationDto.page ? paginationDto.offset : 0,
           projection: findOptions.projection,
           options: findOptions.options,
           limit: paginationDto.limit,
@@ -388,7 +393,7 @@ export class MongoBaseService<
   }
 
   async _findOne(
-    filter: Record<string, unknown>,
+    filter: FilterQuery<T>,
     findOptions: MongoFindOptions = new MongoFindOptions({
       select: '',
       populateOptions: this.populate,

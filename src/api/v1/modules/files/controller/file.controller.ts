@@ -11,7 +11,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiCreatedResponse,
   ApiQuery,
   ApiTags,
@@ -24,10 +23,7 @@ import { CurrentUser } from '../../../../../common/decorators/current-user.decor
 import { FileDto } from '../dto/file.dto';
 import { Get, StreamableFile } from '@nestjs/common';
 import { GetFileQueryDto } from '../dto/get-file-query.dto';
-import { JwtAuthGuard } from '../../../../../common/guards/jwt-auth.guard';
-import { MakeAbilityGuard } from '../../../../../common/guards/make-ability.guard';
 import { serverErrorDto } from '../../../../../common/dto/server-error.dto';
-import { PoliciesGuard } from '../../../../../common/guards/policy.guard';
 import { CheckPolicies } from '../../../../../common/casl/policy-handler';
 import { Action } from '../../../../../common/enums/action.enum';
 import { Resource } from '../../../../../common/enums/resource.enum';
@@ -39,14 +35,9 @@ import { AppAbility } from '../../authorizaation/casl/casl-ability.factory';
   type: serverErrorDto,
 })
 @Controller('/')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard, MakeAbilityGuard, PoliciesGuard)
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @CheckPolicies((ability: AppAbility) =>
-    ability.can(Action.READ, Resource.FILE),
-  )
   @ApiQuery({ type: GetFileQueryDto })
   @Get('/')
   async getFile(
@@ -56,9 +47,6 @@ export class FileController {
     return this.fileService.getFile(getFileQueryDto.hashKey, res);
   }
 
-  @CheckPolicies((ability: AppAbility) =>
-    ability.can(Action.CREATE, Resource.FILE),
-  )
   @Post('/')
   @ApiCreatedResponse({ type: FileDto })
   @UseInterceptors(FileInterceptor('file'))

@@ -32,7 +32,6 @@ import { PaginationResponseDto } from '../../../../../common/dto/pagination-resp
 import { CurrentUser } from '../../../../../common/decorators/current-user.decorator';
 import { serverErrorDto } from '../../../../../common/dto/server-error.dto';
 import { FilterOptionDto } from '../../../../../common/dto/filter-option.dto';
-import { plainToClass } from 'class-transformer';
 import { PresenceDto } from '../dto/presence.dto';
 import { PresenceService } from '../service/presence.service';
 import { CreatePresenceDto } from '../dto/create-presence.dto';
@@ -68,7 +67,7 @@ export class PresenceController {
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<PresenceDto>> {
     const result = await this.pressenceService.findAll(paginationDto);
-    result.items = result.items.map((item) => plainToClass(PresenceDto, item));
+    // result.items = result.items.map((item) => plainToClass(PresenceDto, item));
     return result;
   }
 
@@ -86,8 +85,8 @@ export class PresenceController {
 
   @Post('/')
   @ApiOperation({
-    summary: 'create users',
-    description: 'create new user and return the users data',
+    summary: 'create presence',
+    description: 'create new presence and return the presences data',
   })
   @CheckPolicies((ability: AppAbility) =>
     ability.can(Action.CREATE, Resource.PRESENCE),
@@ -96,7 +95,17 @@ export class PresenceController {
     @Body() createDto: CreatePresenceDto,
     @CurrentUser() user: UserDto,
   ): Promise<PresenceDto> {
-    return await this.pressenceService.createPresence(createDto, user);
+    return await this.pressenceService.create(createDto, user);
+  }
+
+  @Post('/enter-exit')
+  @ApiOperation({
+    summary:
+      'if the user didnt enter today will enter otherwise will exit and if both times are set throws error',
+    description: 'create new user and return the users data',
+  })
+  async enterExit(@CurrentUser() user: UserDto): Promise<PresenceDto> {
+    return await this.pressenceService.enterExit(user);
   }
 
   @Get('/:id')

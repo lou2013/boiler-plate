@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Inject,
-  Logger,
-  LoggerService,
-} from '@nestjs/common';
+import { Inject, Logger, LoggerService } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { MongoBaseService } from 'src/common/service/mongo.base.service';

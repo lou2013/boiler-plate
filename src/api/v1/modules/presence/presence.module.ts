@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { forwardRef, Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseModule } from 'src/shared/database/database.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
@@ -13,11 +13,11 @@ import { PresenceService } from './service/presence.service';
       { name: Presence.name, schema: PresenceSchema },
     ]),
     DatabaseModule,
+    forwardRef(() => AuthenticationModule),
     AuthorizationModule,
-    AuthenticationModule,
   ],
   providers: [PresenceService, Logger],
   controllers: [PresenceController],
-  exports: [],
+  exports: [PresenceService],
 })
 export class PresenceModule {}

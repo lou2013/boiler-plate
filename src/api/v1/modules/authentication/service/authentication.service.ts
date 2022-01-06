@@ -42,6 +42,7 @@ import { ProfileDto } from '../dto/profile.dto';
 import { Resource } from 'src/common/enums/resource.enum';
 import { Action } from 'src/common/enums/action.enum';
 import { NestedUserDto } from '../../user/dto/user-nested.dto';
+import { PresenceService } from '../../presence/service/presence.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -54,6 +55,7 @@ export class AuthenticationService {
     private readonly smsService: SmsService,
     private readonly configService: ConfigService,
     protected jwtService: JwtService,
+    private readonly presenceService: PresenceService,
   ) {
     this.loginMethods = {
       sms: undefined,
@@ -283,7 +285,31 @@ export class AuthenticationService {
         result[resource][action] = ability.can(action, resource);
       }
     }
-    return new ProfileDto({ abilities: result, user: user as NestedUserDto });
+    let lastPresence;
+    try {
+      lastPresence = await this.presenceService.findOne(
+        [
+          {
+            field: 'userId',
+            operation: FilterOperationEnum.EQ,
+            value: user.id,
+          },
+          {
+            field: 'date',
+            operation: FilterOperationEnum.GTE,
+            value: new Date().toLocaleDateString('fa-IR'),
+          },
+        ],
+        { options: { sort: { date: -1 } } },
+      );
+    } catch (error) {
+      lastPresence = null;
+    }
+    return new ProfileDto({
+      abilities: result,
+      user: user as NestedUserDto,
+      lastPresence,
+    });
   }
 
   private async _sendCode(phoneNumber: string): Promise<string> {

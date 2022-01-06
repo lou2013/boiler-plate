@@ -64,8 +64,6 @@ export class RoleController {
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<RoleDto>> {
     const result = await this.roleService.findAll(paginationDto);
-    console.log(result);
-
     // result.items = result.items.map((item) => plainToClass(RoleDto, item));
     return result;
   }
