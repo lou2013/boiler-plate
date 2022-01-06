@@ -6,7 +6,7 @@ import { AuthorizationModule } from '../authorizaation/authorization.module';
 import { MedicineController } from './controller/medicine.controller';
 import { Medicine, MedicineSchema } from './model/medicine.entity';
 import { MedicineService } from './service/medicine.service';
-
+// this module is used to handle the medicines
 @Module({
   imports: [
     MongooseModule.forFeature([

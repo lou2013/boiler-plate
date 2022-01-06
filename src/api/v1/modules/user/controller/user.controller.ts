@@ -68,9 +68,6 @@ export class UserController {
     @Query() paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<UserDto>> {
     const result = await this.userService.findAll(paginationDto);
-    result.items = result.items.map((item) => {
-      return plainToClass(UserDto, item);
-    });
     return result;
   }
 

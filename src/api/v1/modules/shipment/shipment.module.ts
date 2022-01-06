@@ -8,7 +8,7 @@ import { MedicineModule } from '../medicine/medicine.module';
 import { ShipmentController } from './controller/shipment.controller';
 import { Shipment, ShipmentSchema } from './model/shipment.entity';
 import { ShipmentService } from './service/shipment.service';
-
+// the shipments are used to restock the medicines it is like the reverse of purchase the shipment only have many medicines and date
 @Module({
   imports: [
     MongooseModule.forFeature([

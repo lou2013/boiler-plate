@@ -6,6 +6,7 @@ import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { CustomerDto } from '../dto/customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
 import { Customer } from '../model/customer.entity';
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the customers
 
 export class CustomerService extends MongoBaseService<
   Customer,

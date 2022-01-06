@@ -6,7 +6,7 @@ import { User, UserSchema } from './model/user.entity';
 import { UserService } from './service/user.service';
 import { AuthorizationModule } from '../authorizaation/authorization.module';
 import { DatabaseModule } from '../../../../shared/database/database.module';
-
+// this is the module to handle users in the system
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),

@@ -1,19 +1,16 @@
 import { LoginMethodDto } from '../dto/login-method.dto';
 import { IloginMethod } from '../interface/login-method.interface';
 import { UserService } from '../../user/service/user.service';
-import { GoogleApiService } from '../../api-services/service/google-api.service';
 import { ILoginService } from '../interface/login-service.interface';
 import { LoginOrigins } from '../enum/login-origins.enum';
-import { GoogleLoginService } from '../service/google-login.service';
 import { LoginResponseDto } from '../dto/login-response.dto';
 
 export class LoginByToken implements IloginMethod {
-  constructor(googleApiService: GoogleApiService, userService: UserService) {
+  constructor(userService: UserService) {
     this.loginOrigins = {
       google: undefined,
     };
     this.userService = userService;
-    this.loginOrigins.google = new GoogleLoginService(googleApiService);
   }
 
   private userService: UserService;

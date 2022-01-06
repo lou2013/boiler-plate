@@ -13,6 +13,9 @@ import { FilterOptionDto } from '../../../../../common/dto/filter-option.dto';
 import { PaginationRequestDto } from '../../../../../common/dto/pagination-request.dto';
 import { PaginationResponseDto } from '../../../../../common/dto/pagination-response.dto';
 import { SearchedUserDto } from '../dto/search-user.dto';
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the users
+// since the passwords needs to be hashed so the method must be overridne and use bcryot libraray to hash it
+// the same goes for the update user and its password
 
 @Injectable()
 export class UserService extends MongoBaseService<
@@ -31,7 +34,7 @@ export class UserService extends MongoBaseService<
       userModel,
       UserDto,
       logger,
-      [],
+      [{ path: 'rolesId', select: 'title' }],
       undefined,
       (action: string, obj: UserDto) => [`user/${obj.id}`],
     );
@@ -40,10 +43,6 @@ export class UserService extends MongoBaseService<
   async searchUser(
     paginationDto: PaginationRequestDto,
   ): Promise<PaginationResponseDto<SearchedUserDto>> {
-    paginationDto.limit = 20;
-    paginationDto.page = 1;
-    paginationDto.offset = 0;
-
     const result = await super._findAll(paginationDto);
     const models = result.rows.map((m) => new SearchedUserDto(m.toJSON()));
 

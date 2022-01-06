@@ -9,6 +9,8 @@ import { CreateShipmentDto } from '../dto/create-shipment.dto';
 import { ShipmentDto } from '../dto/shipment.dto';
 import { UpdateShipmentDto } from '../dto/update-shipment.dto';
 import { Shipment } from '../model/shipment.entity';
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the shipments
+// the create shipment method is used to create shipments and update the medicine stock.
 
 export class ShipmentService extends MongoBaseService<
   Shipment,

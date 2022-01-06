@@ -12,6 +12,8 @@ import { CreatePresenceDto } from '../dto/create-presence.dto';
 import { PresenceDto } from '../dto/presence.dto';
 import { UpdatePresenceDto } from '../dto/update-presence.dto';
 import { Presence } from '../model/presence.entity';
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the presences
+// the enterExit method is used for making them and saving them this method is called for each users others are used only by admins
 
 export class PresenceService extends MongoBaseService<
   Presence,

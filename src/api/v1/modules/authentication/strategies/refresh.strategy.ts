@@ -17,6 +17,7 @@ export class RefreshStrategy extends PassportStrategy(
     });
   }
 
+  //returning user by the payload
   async validate(payload: any): Promise<UserDto> {
     return await this.userService.findById(payload.sub);
   }

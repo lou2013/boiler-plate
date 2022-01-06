@@ -29,8 +29,6 @@ import { TokenResponseDto } from '../dto/token-response.dto';
 import { RedisClients } from '../../../../../common/enums/redis.clients.enum';
 import { JwtPayloadDto } from '../dto/jwt-payload.dto';
 import { changePhoneNumberStep } from '../enum/change-phone-number-step.enum';
-import { LoginByToken } from '../methods/login-by-token';
-import { GoogleApiService } from '../../api-services/service/google-api.service';
 import { SmsService } from '../../../../../shared/sms/service/sms.service';
 import { FilterOptionDto } from '../../../../../common/dto/filter-option.dto';
 import { AppConfig } from '../../../../../common/config/app.config';
@@ -44,6 +42,9 @@ import { Action } from 'src/common/enums/action.enum';
 import { NestedUserDto } from '../../user/dto/user-nested.dto';
 import { PresenceService } from '../../presence/service/presence.service';
 
+// all the logic of loggin is used handled in this service the login method takes the user and  creates the tokens for it and return it other methods handle finding the user thorugh passowrd or sms
+// the profile method is used to get the profile of the user and its abilitied also his last presence
+
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -51,7 +52,6 @@ export class AuthenticationService {
     protected readonly logger: LoggerService,
     protected readonly userService: UserService,
     readonly redisService: RedisManager,
-    readonly googleApiService: GoogleApiService,
     private readonly smsService: SmsService,
     private readonly configService: ConfigService,
     protected jwtService: JwtService,
@@ -66,10 +66,7 @@ export class AuthenticationService {
       smsService,
       configService,
     );
-    this.loginMethods[LoginMethods.TOKEN] = new LoginByToken(
-      googleApiService,
-      userService,
-    );
+
     this.redisClient = redisService.getClient(RedisClients.MAIN);
   }
 

@@ -8,7 +8,7 @@ import { MedicineModule } from './modules/medicine/medicine.module';
 import { ShipmentModule } from './modules/shipment/shipment.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 import { FileModule } from './modules/files/file.module';
-
+//these are the routes to the modules cotrollers
 export const V1Routes = {
   path: '/v1',
   module: V1Module,

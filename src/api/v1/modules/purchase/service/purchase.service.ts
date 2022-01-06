@@ -15,7 +15,8 @@ import { CreatePurchaseDto } from '../dto/create-purchase.dto';
 import { PurchaseDto } from '../dto/purchase.dto';
 import { UpdatePurchaseDto } from '../dto/update-purchase.dto';
 import { Purchase } from '../model/purchase.entity';
-
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the purchases
+// the create purchase method is used to create purchases and update the medicine stock.
 export class PurchaseService extends MongoBaseService<
   Purchase,
   PurchaseDto,

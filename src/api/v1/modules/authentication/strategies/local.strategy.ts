@@ -11,6 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({ usernameField: 'phoneNumber' });
   }
 
+  //validate user thorugh password strategy is handled here
   async validate(phoneNumber: string, password: string): Promise<any> {
     const user = await this.authService.validateUserWithPassword(
       phoneNumber,

@@ -10,7 +10,7 @@ import { contentType } from 'mime-types';
 import { S3 } from '../../../common/enums/s3.enum';
 import { AppConfigs } from '../../../constants/app.configs';
 import { s3Config } from '../../../common/config/s3.config';
-
+// this service uses minio client to upload files to s3 bucket which is created on boot up
 @Injectable()
 export class S3Service {
   constructor(

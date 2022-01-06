@@ -17,7 +17,6 @@ import { MongoDbService } from './mongo-db.service';
           configService.get<string>('NODE_ENV') === 'test'
             ? configService.get<MongoDbConfig>(AppConfigs.MONGO_TEST)
             : configService.get<MongoDbConfig>(AppConfigs.MONGO_MAIN);
-        console.log(config);
 
         return {
           uri: config.replicaMode

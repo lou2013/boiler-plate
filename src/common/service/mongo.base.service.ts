@@ -27,16 +27,7 @@ import { UpdateQuery } from 'mongoose';
 import { FilterQuery } from 'mongoose';
 import { isUndefined } from 'lodash';
 
-// type QueryWithHelpers<
-//   ResultType,
-//   DocType,
-//   THelpers = {},
-//   RawDocType = DocType,
-// > = Query<ResultType, DocType, THelpers, RawDocType> & THelpers;
-// type EnforceDocument<T, TMethods, TVirtuals> = T extends Document
-//   ? Require_id<T>
-//   : Document<any, any, T> & Require_id<T> & TVirtuals & TMethods;
-
+// this is the base class service which other classes will extend so this is the connection of the service to the database
 @Injectable()
 export class MongoBaseService<
   T extends MongoBaseModel,
@@ -246,19 +237,8 @@ export class MongoBaseService<
     rows: T[];
     count: number;
   }> {
-    // const found = await this.parent.service._findOne(
-    //   {
-    //     _id: parentId,
-    //     [this.parent.fieldName]: {
-    //       $elemMatch: { _id: id, deletedAt: { $exists: false } },
-    //     },
-    //   },
-    //   findOptions,
-    // );
-    // if (!found) throw new NotFoundException();
-    // await found.populate(findOptions.populateOptions);
-    // return found;
-
+    if (paginationDto.page && paginationDto.page !== 0)
+      paginationDto.offset = (paginationDto.page - 1) * paginationDto.limit;
     if (this.parent) {
       const data = await this.model.paginate(
         {
@@ -285,7 +265,6 @@ export class MongoBaseService<
         {
           sort: this.sortFieldsFromDto(paginationDto),
           select: findOptions.select,
-          page: !paginationDto.offset ? paginationDto.page : undefined,
           offset: paginationDto.offset ?? 0,
           projection: findOptions.projection,
           options: findOptions.options,

@@ -4,7 +4,7 @@ import { Error } from '../model/error.entity';
 import { PaginateModel } from 'mongoose';
 import { ErrorDto } from '../dto/error.dto';
 import { MongoBaseService } from '../../../../../common/service/mongo.base.service';
-
+// this service extends base service and the model and dto is passed to base service it is used for saving the errors
 @Injectable()
 export class ErrorService extends MongoBaseService<
   Error,

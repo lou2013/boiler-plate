@@ -19,6 +19,7 @@ export class AppController {
     return 'hello :D';
   }
 
+  // this is supposed to be pos api but since we dont own a pose i just mocked it with a random number
   @Post('/pos')
   async pos() {
     return (Math.floor(Math.random() * 900000000000) + 100000000000).toString();

@@ -22,6 +22,9 @@ import { FileResource } from '../enum/file-resource.enum';
 import { Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the files
+// the file information are saved in our database while the file itself is saved in the s3 bucket
+// saving the file is used through s3 service
 
 @Injectable()
 export class FileService extends MongoBaseService<

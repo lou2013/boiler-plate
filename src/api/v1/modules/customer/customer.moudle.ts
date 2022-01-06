@@ -6,7 +6,7 @@ import { AuthorizationModule } from '../authorizaation/authorization.module';
 import { CustomerController } from './controller/customer.controller';
 import { Customer, CustomerSchema } from './model/customer.entity';
 import { CustomerService } from './service/customer.service';
-
+// the customers of pharmacy is handled here they can purchase medicines
 @Module({
   imports: [
     MongooseModule.forFeature([

@@ -11,7 +11,7 @@ import { MedicineModule } from './modules/medicine/medicine.module';
 import { ShipmentModule } from './modules/shipment/shipment.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 import { FileModule } from './modules/files/file.module';
-
+// every module in the v1 routes of this project is here
 @Module({
   imports: [
     RouterModule.forRoutes([V1Routes]),

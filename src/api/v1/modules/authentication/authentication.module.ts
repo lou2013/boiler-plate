@@ -12,17 +12,17 @@ import { PassportModule } from '@nestjs/passport';
 import { SmsModule } from '../../../../shared/sms/sms.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../user/model/user.entity';
-import { ApiServicesModule } from '../api-services/api-services.module';
 import { DatabaseModule } from '../../../../shared/database/database.module';
 import { RedisModule } from '../../../../shared/redis/redis.module';
 import { AppConfigs } from '../../../../constants/app.configs';
 import { AppConfig } from '../../../../common/config/app.config';
 import { AuthorizationModule } from '../authorizaation/authorization.module';
 import { PresenceModule } from '../presence/presence.module';
-
+// this service is used to authenticate the users and getting their profiles it uses passport and jwt token strategy to handle the authentication of a user
+// the sms is sent through a kave negar service which sends sms to the user
+// the refrsh token is handled the same way
 @Module({
   imports: [
-    ApiServicesModule,
     DatabaseModule,
     ConfigModule,
     UserModule,

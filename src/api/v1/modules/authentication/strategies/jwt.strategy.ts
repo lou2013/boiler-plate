@@ -16,6 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // this method validates the token and returns the user profile
   async validate(payload: any): Promise<UserDto> {
     try {
       return await this.userService.findById(payload.sub, null, {
@@ -30,8 +31,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ],
       });
     } catch (error) {
-      console.log(error);
-
       if (error.status === 404) {
         throw new UnauthorizedException('Unauthenticated');
       }

@@ -1,5 +1,4 @@
 import {
-  IsAlpha,
   IsDate,
   IsEnum,
   IsMobilePhone,
@@ -9,13 +8,14 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Gender } from '../enum/gender.enum';
-import { Expose, Type, Transform, Exclude } from 'class-transformer';
+import { Expose, Type, Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { MongoBaseDto } from '../../../../../common/dto/mongo-base.dto';
 import { IsString } from 'class-validator';
 import { NestedRoleDto } from '../../authorizaation/dto/nested-role.dto';
-import { Types } from 'mongoose';
 import { ContractDto } from './contract/contract.dto';
+import { MongoRelationId } from 'src/common/decorators/mongo-relation-id.decorator';
+import { MongoRelationDto } from 'src/common/decorators/mongo-relation-dto.decorator';
 
 export class UserDto extends MongoBaseDto {
   @Expose()
@@ -89,26 +89,11 @@ export class UserDto extends MongoBaseDto {
   })
   @ValidateNested()
   @Type(() => NestedRoleDto)
-  @Transform(
-    ({ obj: { rolesId } }) => {
-      return rolesId?.map(
-        (item) =>
-          new NestedRoleDto(
-            item instanceof Types.ObjectId ? { id: item.toString() } : item,
-          ),
-      );
-    },
-    { toPlainOnly: true },
-  )
+  @MongoRelationDto({ dto: () => NestedRoleDto, idFieldName: 'rolesId' })
   roles!: NestedRoleDto[];
 
   @Expose({ toClassOnly: true })
-  @Transform(
-    ({ obj: { roles } }) => {
-      return roles?.map((item) => item.id);
-    },
-    { toClassOnly: true },
-  )
+  @MongoRelationId({ fieldName: 'roles' })
   rolesId!: string[];
 
   @Expose()

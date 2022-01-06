@@ -10,6 +10,8 @@ import { PaginateModel } from 'mongoose';
 import { PermissionService } from './permission.service';
 import { MongoBaseService } from '../../../../../common/service/mongo.base.service';
 
+// this service extends the base service of mongo tool and the model and dto is passed to base service it is used for saving the roles
+// since the permissions must be set on users and need some special logic the method is written in here
 @Injectable()
 export class RoleService extends MongoBaseService<
   Role,

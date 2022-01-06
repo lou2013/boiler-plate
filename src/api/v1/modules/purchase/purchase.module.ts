@@ -9,6 +9,7 @@ import { PurchaseController } from './controller/purchase.controller';
 import { Purchase, PurchaseSchema } from './model/purchase.entity';
 import { PurchaseService } from './service/purchase.service';
 
+//each user can purchase medicines which is created to for reports
 @Module({
   imports: [
     MongooseModule.forFeature([
