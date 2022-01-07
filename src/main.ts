@@ -24,6 +24,8 @@ async function bootstrap(): Promise<void> {
   // the common files rae the files that is shared between all files
   //the shared files are modules that is shared between all moduels
   //to run the project there must be a config.yaml file in the directory /configs the format is introduced in the config-example.yaml file
+  //@UseGuards(JwtAuthGuard, MakeAbilityGuard, PoliciesGuard)
+  //above guards are used for authentication and authorization
   const app = await NestFactory.create(AppModule);
   const configService = app.get<ConfigService>(ConfigService);
   app.useLogger(
