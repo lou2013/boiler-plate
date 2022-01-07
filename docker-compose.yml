@@ -1,15 +1,15 @@
 version: '3.3'
 services:
-  mysql:
-    image: m.docker-registry.ir/mysql/mysql-server:8.0
-    container_name: mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_ROOT_HOST: '%'
-    volumes:
-      - ./docker-data/mysql:/var/lib/mysql
+  # mysql:
+  #   image: m.docker-registry.ir/mysql/mysql-server:8.0
+  #   container_name: mysql
+  #   ports:
+  #     - 3306:3306
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: root
+    #   MYSQL_ROOT_HOST: '%'
+    # volumes:
+    #   - ./docker-data/mysql:/var/lib/mysql
   redis:
     image: m.docker-registry.ir/redis
     container_name: redis
@@ -39,18 +39,19 @@ services:
       - REDIS_HOSTS=local:redis:6379
     ports:
       - '8081:8081'
-  phpmyadmin:
-    image: m.docker-registry.ir/phpmyadmin
-    container_name: pma
-    links:
-      - mysql
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    restart: always
-    ports:
-      - 1234:80
+  # phpmyadmin:
+  #   image: m.docker-registry.ir/phpmyadmin
+  #   container_name: pma
+  #   links:
+  #     - mysql
+  #   environment:
+  #     PMA_HOST: mysql
+  #     PMA_PORT: 3306
+  #     PMA_ARBITRARY: 1
+  #   restart: always
+  #   ports:
+  #     - 1234:80
+
 # networks:
 #   mongodb_replicaset_network:
 

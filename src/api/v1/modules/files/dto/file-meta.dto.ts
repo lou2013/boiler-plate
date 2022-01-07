@@ -9,13 +9,6 @@ export class FileMetaDto {
   })
   size: number;
 
-  @Expose({})
-  @ApiProperty({
-    type: String,
-    example: 'blur hash',
-  })
-  blurHash: string;
-
   constructor(partial: Partial<FileMetaDto>) {
     Object.assign(this, partial);
   }
